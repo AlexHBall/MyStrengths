@@ -10,6 +10,13 @@
    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
    <uses-permission android:name="android.permission.WAKE_LOCK" />
    <application android:name="io.flutter.app.FlutterApplication" android:label="my_strengths" android:icon="@mipmap/ic_launcher">
+      <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+      <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+         <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+         </intent-filter>
+      </receiver>
+      a
       <activity android:name=".MainActivity" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">
          <intent-filter>
             <action android:name="android.intent.action.MAIN" />
