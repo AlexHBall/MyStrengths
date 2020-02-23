@@ -4,11 +4,13 @@ import 'package:my_strengths/models/frequency.dart';
 import '../models/entry.dart';
 import '../utils/database_helper.dart';
 import 'package:sqflite/sqflite.dart';
+import 'containers/entry_container.dart';
 import 'settings.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:my_strengths/utils/notification_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'app_bar.dart';
 
 DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -28,6 +30,8 @@ class DyanmicList extends State<MyStrenghtsList> {
 
   final notifications = FlutterLocalNotificationsPlugin();
 
+  MyAppBar myAppBar = new MyAppBar();
+  EntryContainer entryContainer = new EntryContainer();
   @override
   void initState() {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -61,18 +65,24 @@ class DyanmicList extends State<MyStrenghtsList> {
     }
 
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("My Strengths"),
-        ),
-        body: new Column(
-          children: <Widget>[
-            new Expanded(
-                child: new ListView.builder(
-                    itemCount: entryList.length,
-                    itemBuilder: (BuildContext ctxt, int index) {
-                      return new Text(entryList[index].description);
-                    })),
-            new TextField(
+      appBar: myAppBar.appBar(context),
+      body: new Column(
+        children: <Widget>[
+          new Expanded(
+              child: new ListView.builder(
+                  itemCount: entryList.length,
+                  itemBuilder: (BuildContext ctxt, int index) {
+                    return entryContainer.entryContainer(
+                        entryList[index].description, context);
+                  })),
+          new Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(100))),
+            child: new TextField(
+              style: Theme.of(context).textTheme.body1,
               controller: eCtrl,
               onSubmitted: (String text) async {
                 String now = dateFormat.format(DateTime.now());
@@ -92,30 +102,16 @@ class DyanmicList extends State<MyStrenghtsList> {
                 await _scheduleNotifications(name, newEntry, frequencies);
               },
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Today I did really well"),
+                  // border: OutlineInputBorder(),
+                  hintText: "Today I did really well",
+                  hintStyle: Theme.of(context).textTheme.body1),
               textAlign: TextAlign.center,
-            )
-          ],
-        ),
-        bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          child: _getRowBar(),
-        ));
-  }
-
-  Row _getRowBar() {
-    return Row(children: <Widget>[
-      Expanded(
-          child: IconButton(
-        icon: Icon(Icons.settings),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Settings();
-          }));
-        },
-      )),
-    ]);
+            ),
+          ),
+          SizedBox(height: 25.0)
+        ],
+      ),
+    );
   }
 
   void updateListView() {
@@ -131,7 +127,7 @@ class DyanmicList extends State<MyStrenghtsList> {
     });
   }
 
-  Future<void> _scheduleNotifications(
+  void _scheduleNotifications(
       String name, Entry entry, List<Frequency> frequencies) {
     //TODO: Tidy this the fuck up, could be smoother
     String text = entry.description;
@@ -157,6 +153,7 @@ class DyanmicList extends State<MyStrenghtsList> {
       } else {
         debugPrint("Didn't set notification");
       }
+      return null;
     }
   }
 
