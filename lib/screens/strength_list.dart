@@ -64,42 +64,29 @@ class DyanmicList extends State<MyStrenghtsList> {
       updateListView();
     }
 
+    var children2 = <Widget>[
+      new Padding(
+        padding: EdgeInsets.only(
+          top: 20,
+        ),
+      ),
+      new Expanded(
+        child: new ListView.builder(
+            itemCount: entryList.length,
+            itemBuilder: (BuildContext ctxt, int index) {
+              return entryContainer.entryContainer(
+                  context, entryList[index].description);
+            }),
+      ),
+      SizedBox(height: 25.0),
+      //TODO: Is there a better way to put space inbetween the box and 
+      _getInputContainer(),
+      SizedBox(height: 25.0)
+    ];
     return new Scaffold(
       appBar: myAppBar.appBar(context),
       body: new Column(
-        children: <Widget>[
-          new Padding(
-            padding: EdgeInsets.only(top: 20),
-          ),
-          new Expanded(
-            child: new ListView.builder(
-                itemCount: entryList.length,
-                itemBuilder: (BuildContext ctxt, int index) {
-                  return entryContainer.entryContainer(context,
-                      entryList[index].description);
-                }),
-          ),
-          new Container(
-            decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(100))),
-            child: new TextField(
-              style: Theme.of(context).textTheme.body2,
-              controller: eCtrl,
-              onSubmitted: (String text) async {
-                _processNewEntry(text);
-              },
-              decoration: InputDecoration(
-                  // border: OutlineInputBorder(),
-                  hintText: RandomList.getPromptMessage(),
-                  hintStyle: Theme.of(context).textTheme.body2),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          SizedBox(height: 25.0)
-        ],
+        children: children2,
       ),
     );
   }
@@ -175,5 +162,27 @@ class DyanmicList extends State<MyStrenghtsList> {
         });
       });
     });
+  }
+
+  Container _getInputContainer() {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.white,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(15))),
+      child: new TextField(
+        style: Theme.of(context).textTheme.body2,
+        controller: eCtrl,
+        onSubmitted: (String text) async {
+          _processNewEntry(text);
+        },
+        decoration: InputDecoration(
+            // border: OutlineInputBorder(),
+            hintText: RandomList.getPromptMessage(),
+            hintStyle: Theme.of(context).textTheme.body2),
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 }

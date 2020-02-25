@@ -84,10 +84,17 @@ class SettingsState extends State<Settings> {
                         },
                         child: new Row(
                           children: <Widget>[
-                            new Text('Notification Reminder in '),
+                            //TODO: Tidy this row up, surely I don't need three separte widgets
+                            new Text(
+                              'Notification Reminder in ',
+                              style: Theme.of(context).textTheme.body2,
+                            ),
                             new Text(
                                 frequencyList[index].duration.toString() + ' '),
-                            new Text(frequencyList[index].getTimeText()),
+                            new Text(
+                              frequencyList[index].getTimeText(),
+                              style: Theme.of(context).textTheme.body2,
+                            ),
                             // new Text(frequencyList[index].toString()),
                           ],
                         ),
@@ -131,7 +138,10 @@ class SettingsState extends State<Settings> {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('What is your name?'),
+        Text(
+          'What is your name?',
+          style: Theme.of(context).textTheme.body2,
+        ),
         new Flexible(child: _getNameField()),
       ],
     );
@@ -141,7 +151,10 @@ class SettingsState extends State<Settings> {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Enable notifications'),
+        Text(
+          'Enable notifications',
+          style: Theme.of(context).textTheme.body2,
+        ),
         Switch(
           value: isSwitched,
           onChanged: (value) {
@@ -160,7 +173,7 @@ class SettingsState extends State<Settings> {
   TextField _getNameField() {
     return new TextField(
       controller: eCtrl,
-      decoration: InputDecoration(hintText: oldName),
+      decoration: InputDecoration(hintText: oldName, hintStyle:Theme.of(context).textTheme.body2,),
       textAlign: TextAlign.center,
       onSubmitted: (String text) async {
         if (prefs == null) {
