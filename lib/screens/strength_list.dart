@@ -5,12 +5,12 @@ import '../models/entry.dart';
 import '../utils/database_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'containers/entry_container.dart';
-import 'settings.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:my_strengths/utils/notification_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app_bar.dart';
+import 'package:my_strengths/utils/randomList.dart';
 
 DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -93,7 +93,7 @@ class DyanmicList extends State<MyStrenghtsList> {
               },
               decoration: InputDecoration(
                   // border: OutlineInputBorder(),
-                  hintText: "Today I did really well",
+                  hintText: RandomList.getPromptMessage(),
                   hintStyle: Theme.of(context).textTheme.body2),
               textAlign: TextAlign.center,
             ),

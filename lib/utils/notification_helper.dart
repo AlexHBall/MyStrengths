@@ -20,14 +20,15 @@ Future showOngoingNotification(
 }) =>
     notifications.show(id, title, body, _ongoing);
 
-Future _showNotification(
-  FlutterLocalNotificationsPlugin notifications, {
-  @required String title,
-  @required String body,
-  @required NotificationDetails type,
-  int id = 0,
-}) =>
-    notifications.show(id, title, body, type);
+// Future _showNotification(
+//Instantly show a notification
+//   FlutterLocalNotificationsPlugin notifications, {
+//   @required String title,
+//   @required String body,
+//   @required NotificationDetails type,
+//   int id = 0,
+// }) =>
+//     notifications.show(id, title, body, type);
 
 Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
     {@required String title,
