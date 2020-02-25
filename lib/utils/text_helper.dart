@@ -1,6 +1,6 @@
 import 'package:dart_random_choice/dart_random_choice.dart';
 
-class RandomList {
+class TextHelper {
   static String getPromptMessage() {
     var list = [
       'What went well today?',

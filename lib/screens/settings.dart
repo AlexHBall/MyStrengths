@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dialogs/dialogs.dart';
 import '../models/frequency.dart';
 import '../utils/database_helper.dart';
+import '../utils/text_helper.dart';
+
 import 'package:sqflite/sqflite.dart';
 
 class Settings extends StatefulWidget {
@@ -65,6 +67,9 @@ class SettingsState extends State<Settings> {
       body: Column(children: <Widget>[
         _getNameRow(),
         _getSwitchRow(),
+        SizedBox(
+          height: 20,
+        ),
         Visibility(
             visible: isSwitched,
             child: new Expanded(
@@ -82,21 +87,9 @@ class SettingsState extends State<Settings> {
                             });
                           }
                         },
-                        child: new Row(
-                          children: <Widget>[
-                            //TODO: Tidy this row up, surely I don't need three separte widgets
-                            new Text(
-                              'Notification Reminder in ',
-                              style: Theme.of(context).textTheme.body2,
-                            ),
-                            new Text(
-                                frequencyList[index].duration.toString() + ' '),
-                            new Text(
-                              frequencyList[index].getTimeText(),
-                              style: Theme.of(context).textTheme.body2,
-                            ),
-                            // new Text(frequencyList[index].toString()),
-                          ],
+                        child: new Text(
+                          frequencyList[index].getNotificationString(),
+                          style: Theme.of(context).textTheme.body2,
                         ),
                       );
                     }))),
@@ -173,7 +166,10 @@ class SettingsState extends State<Settings> {
   TextField _getNameField() {
     return new TextField(
       controller: eCtrl,
-      decoration: InputDecoration(hintText: oldName, hintStyle:Theme.of(context).textTheme.body2,),
+      decoration: InputDecoration(
+        hintText: oldName,
+        hintStyle: Theme.of(context).textTheme.body2,
+      ),
       textAlign: TextAlign.center,
       onSubmitted: (String text) async {
         if (prefs == null) {
