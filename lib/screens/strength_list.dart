@@ -68,13 +68,17 @@ class DyanmicList extends State<MyStrenghtsList> {
       appBar: myAppBar.appBar(context),
       body: new Column(
         children: <Widget>[
+          new Padding(
+            padding: EdgeInsets.only(top: 20),
+          ),
           new Expanded(
-              child: new ListView.builder(
-                  itemCount: entryList.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    return entryContainer.entryContainer(
-                        entryList[index].description, context);
-                  })),
+            child: new ListView.builder(
+                itemCount: entryList.length,
+                itemBuilder: (BuildContext ctxt, int index) {
+                  return entryContainer.entryContainer(context,
+                      entryList[index].description);
+                }),
+          ),
           new Container(
             decoration: BoxDecoration(
                 border: Border.all(
@@ -82,7 +86,7 @@ class DyanmicList extends State<MyStrenghtsList> {
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(100))),
             child: new TextField(
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.body2,
               controller: eCtrl,
               onSubmitted: (String text) async {
                 _processNewEntry(text);
@@ -90,7 +94,7 @@ class DyanmicList extends State<MyStrenghtsList> {
               decoration: InputDecoration(
                   // border: OutlineInputBorder(),
                   hintText: "Today I did really well",
-                  hintStyle: Theme.of(context).textTheme.body1),
+                  hintStyle: Theme.of(context).textTheme.body2),
               textAlign: TextAlign.center,
             ),
           ),

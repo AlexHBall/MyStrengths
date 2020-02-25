@@ -9,7 +9,7 @@ class MyAppBar {
       centerTitle: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(30),
+          bottom: Radius.circular(15),
         ),
       ),
       actions: <Widget>[
