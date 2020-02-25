@@ -85,21 +85,7 @@ class DyanmicList extends State<MyStrenghtsList> {
               style: Theme.of(context).textTheme.body1,
               controller: eCtrl,
               onSubmitted: (String text) async {
-                String now = dateFormat.format(DateTime.now());
-                String date = now.substring(0, 10);
-                String time = now.substring(11, 19);
-                Entry newEntry = Entry(text, date, time);
-                entryList.add(newEntry);
-
-                debugPrint("Adding entry $newEntry to db");
-                dbHelper.insertEntry(newEntry);
-
-                eCtrl.clear();
-                setState(() {});
-
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                String name = prefs.getString('name');
-                await _scheduleNotifications(name, newEntry, frequencies);
+                _processNewEntry(text);
               },
               decoration: InputDecoration(
                   // border: OutlineInputBorder(),
@@ -112,6 +98,24 @@ class DyanmicList extends State<MyStrenghtsList> {
         ],
       ),
     );
+  }
+
+  void _processNewEntry(String text) async {
+    String now = dateFormat.format(DateTime.now());
+    String date = now.substring(0, 10);
+    String time = now.substring(11, 19);
+    Entry newEntry = Entry(text, date, time);
+    entryList.add(newEntry);
+
+    debugPrint("Adding entry $newEntry to db");
+    dbHelper.insertEntry(newEntry);
+
+    eCtrl.clear();
+    setState(() {});
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String name = prefs.getString('name');
+    await _scheduleNotifications(name, newEntry, frequencies);
   }
 
   void updateListView() {
