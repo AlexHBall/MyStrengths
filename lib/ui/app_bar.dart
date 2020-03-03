@@ -36,6 +36,8 @@ class MyAppBar {
                 );
               },
             );
+            //TODO: Load the relevant entries for this date, and maybe disable entry button
+            //Would need to add a master date somewhere to accomodate for an entry on a different date
           },
           // )
         ),

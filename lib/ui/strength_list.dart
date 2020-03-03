@@ -62,49 +62,42 @@ class DyanmicList extends State<MyStrenghtsList> {
   }
 
   void _processNewEntry(String text) async {
-    String now = dateFormat.format(DateTime.now());
-    String date = now.substring(0, 10);
-    String time = now.substring(11, 19);
-    Entry newEntry = Entry(text, date, time);
-    _myStrengthsBloc.addStrength(newEntry);
-    eCtrl.clear();
+    Entry newEntry = _createNewEntry(text);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    frequencies = await _frequencyBloc.getFrequenciesNow();
-    final lemg = frequencies.length;
-    debugPrint("Frequency Length $lemg");
-    frequencies.forEach((frequency) => debugPrint(frequency.toString()));
-
     String name = prefs.getString('name');
-    // await _scheduleNotifications(name, newEntry, frequencies);
+
+    frequencies = await _frequencyBloc.getFrequenciesNow();
+    if (frequencies.isNotEmpty) {
+      for (int i = 0; i < frequencies.length; i++) {
+        await _scheduleNotification(name, newEntry, frequencies[i]);
+      }
+    } 
   }
 
-  void _scheduleNotifications(String name, Entry entry) {
-    //TODO: Tidy this the fuck up, could be smoother
+  void _scheduleNotification(String name, Entry entry, Frequency frequency) {
     String text = entry.description;
     String date = entry.date;
 
-    for (final e in frequencies) {
-      final duration = e.duration;
-      final type = e.timeType;
+    final duration = frequency.duration;
+    final type = frequency.timeType;
 
-      if (type == 'D') {
-        scheduleNotification(notifications,
-            title: 'Congratulations $name!',
-            body: 'You did well with $text on the $date',
-            durationType: "days",
-            duration: duration);
-      } else if (type == 'W') {
-        scheduleNotification(notifications,
-            title: 'Congratulations $name!',
-            body: 'You did well with $text on the $date',
-            durationType: "weeks",
-            duration: duration);
-      } else {
-        debugPrint("Didn't set notification");
-      }
-      return null;
+    if (type == 'D') {
+      scheduleNotification(notifications,
+          title: 'Congratulations $name!',
+          body: 'You did well with $text on the $date',
+          durationType: "days",
+          duration: duration);
+    } else if (type == 'W') {
+      scheduleNotification(notifications,
+          title: 'Congratulations $name!',
+          body: 'You did well with $text on the $date',
+          durationType: "weeks",
+          duration: duration);
+    } else {
+      debugPrint("Didn't set notification");
     }
+    return null;
   }
 
   Container _getInputContainer() {
@@ -144,8 +137,7 @@ class DyanmicList extends State<MyStrenghtsList> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, itemPosition) {
                 Entry entry = snapshot.data[itemPosition];
-                return myContainers.entryContainer(
-                    context, entry.description);
+                return myContainers.entryContainer(context, entry.description);
               },
             )
           : Container(
@@ -189,5 +181,15 @@ class DyanmicList extends State<MyStrenghtsList> {
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: null);
+  }
+
+  Entry _createNewEntry(String text) {
+    String now = dateFormat.format(DateTime.now());
+    String date = now.substring(0, 10);
+    String time = now.substring(11, 19);
+    Entry newEntry = Entry(text, date, time);
+    _myStrengthsBloc.addStrength(newEntry);
+    eCtrl.clear();
+    return newEntry;
   }
 }
