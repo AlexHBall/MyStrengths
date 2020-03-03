@@ -39,7 +39,12 @@ class Dialogs {
                   new Expanded(
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[new Text('Delete notifcation?')],
+                      children: <Widget>[
+                        new Text(
+                          'Delete notifcation?',
+                          style: TextStyle(color: Colors.black),
+                        )
+                      ],
                     ),
                   ),
                   new Expanded(

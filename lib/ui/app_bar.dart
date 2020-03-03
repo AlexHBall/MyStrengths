@@ -42,11 +42,9 @@ class MyAppBar {
         IconButton(
           icon: Icon(Icons.settings),
           onPressed: () {
-            // Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //   return Settings();
-            // }
-            // )
-            // );
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return Settings();
+            }));
           },
         ),
       ],

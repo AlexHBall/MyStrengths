@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EntryContainer {
+class Containers {
   entryContainer(BuildContext context, String text) {
     return new Container(
         padding: EdgeInsets.only(left: 10),
@@ -19,5 +19,29 @@ class EntryContainer {
             )),
           ],
         ));
+  }
+
+  loadingContainer(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CircularProgressIndicator(),
+            Text(
+              "Loading...",
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  noFrequencies(BuildContext context) {
+    return Container(
+      child: Text(
+        "Add a new notification below!",
+      ),
+    );
   }
 }

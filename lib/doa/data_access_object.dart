@@ -53,7 +53,6 @@ class MyStrengthsDao {
     List<Entry> entryList = List<Entry>();
     // For loop to create a 'Entry List' from a 'Map List'
     for (int i = 0; i < count; i++) {
-      final db = await dbProvider.database;
       entryList.add(Entry.fromMapObject(entryMapList[i]));
     }
     return entryList;
@@ -76,7 +75,6 @@ class MyStrengthsDao {
 
   Future<int> insertFrequency(Frequency frequency) async {
     final db = await dbProvider.database;
-    final insert = frequency.toMap();
     var result = await db.insert(frequencyTable, frequency.toMap());
     return result;
   }
