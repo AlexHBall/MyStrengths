@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/strength_list.dart';
-import 'theme.dart';
+import 'ui/strength_list.dart';
+import 'utils/theme.dart';
 
 void main() {
   runApp(MyStrengths());

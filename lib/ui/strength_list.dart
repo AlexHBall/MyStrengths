@@ -1,17 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_strengths/models/frequency.dart';
 import 'package:my_strengths/models/entry.dart';
-import 'package:my_strengths/screens/app_bar.dart';
-import 'package:my_strengths/screens/containers/entry_container.dart';
+import 'package:my_strengths/ui/app_bar.dart';
+import 'package:my_strengths/ui/containers/entry_container.dart';
 import 'package:my_strengths/utils/text_helper.dart';
 import 'package:my_strengths/utils/notification_helper.dart';
-import 'package:my_strengths/utils/database_helper.dart';
-
+import 'package:my_strengths/bloc/my_strengths_bloc.dart';
 
 DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -23,10 +21,9 @@ class MyStrenghtsList extends StatefulWidget {
 }
 
 class DyanmicList extends State<MyStrenghtsList> {
-  List<Entry> entryList;
   List<Frequency> frequencies;
   int count = 0;
-  DatabaseHelper dbHelper = DatabaseHelper();
+  MyStrengthsBloc _myStrengthsBloc = MyStrengthsBloc();
   final TextEditingController eCtrl = new TextEditingController();
 
   final notifications = FlutterLocalNotificationsPlugin();
@@ -37,7 +34,6 @@ class DyanmicList extends State<MyStrenghtsList> {
   void initState() {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         new FlutterLocalNotificationsPlugin();
-// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     var initializationSettingsAndroid =
         new AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = IOSInitializationSettings();
@@ -47,7 +43,7 @@ class DyanmicList extends State<MyStrenghtsList> {
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
 
-    _getFrequencies();
+    // _getFrequencies();
 
     super.initState();
   }
@@ -60,11 +56,6 @@ class DyanmicList extends State<MyStrenghtsList> {
 
   @override
   Widget build(BuildContext ctxt) {
-    if (entryList == null) {
-      entryList = List<Entry>();
-      updateListView();
-    }
-
     var children2 = <Widget>[
       new Padding(
         padding: EdgeInsets.only(
@@ -72,15 +63,9 @@ class DyanmicList extends State<MyStrenghtsList> {
         ),
       ),
       new Expanded(
-        child: new ListView.builder(
-            itemCount: entryList.length,
-            itemBuilder: (BuildContext ctxt, int index) {
-              return entryContainer.entryContainer(
-                  context, entryList[index].description);
-            }),
+        child: getEntryList(),
       ),
       SizedBox(height: 25.0),
-      //TODO: Is there a better way to put space inbetween the box and 
       _getInputContainer(),
       SizedBox(height: 25.0)
     ];
@@ -97,30 +82,12 @@ class DyanmicList extends State<MyStrenghtsList> {
     String date = now.substring(0, 10);
     String time = now.substring(11, 19);
     Entry newEntry = Entry(text, date, time);
-    entryList.add(newEntry);
-
-    debugPrint("Adding entry $newEntry to db");
-    dbHelper.insertEntry(newEntry);
-
+    _myStrengthsBloc.addStrength(newEntry);
     eCtrl.clear();
-    setState(() {});
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String name = prefs.getString('name');
-    await _scheduleNotifications(name, newEntry, frequencies);
-  }
-
-  void updateListView() {
-    final Future<Database> dbFuture = dbHelper.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Entry>> entryListFuture = dbHelper.getTodaysList();
-      entryListFuture.then((entryList) {
-        setState(() {
-          this.entryList = entryList;
-          this.count = entryList.length;
-        });
-      });
-    });
+    // await _scheduleNotifications(name, newEntry, frequencies);
   }
 
   void _scheduleNotifications(
@@ -131,8 +98,6 @@ class DyanmicList extends State<MyStrenghtsList> {
     for (final e in frequencies) {
       final duration = e.duration;
       final type = e.timeType;
-
-      debugPrint("Attempting to set notification for $duration $type for $e");
 
       if (type == 'D') {
         scheduleNotification(notifications,
@@ -151,18 +116,6 @@ class DyanmicList extends State<MyStrenghtsList> {
       }
       return null;
     }
-  }
-
-  Future _getFrequencies() async {
-    final Future<Database> dbFuture = dbHelper.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Frequency>> frequencyListFuture = dbHelper.getFrequencyList();
-      frequencyListFuture.then((frequencyList) {
-        setState(() {
-          this.frequencies = frequencyList;
-        });
-      });
-    });
   }
 
   Container _getInputContainer() {
@@ -185,5 +138,72 @@ class DyanmicList extends State<MyStrenghtsList> {
         textAlign: TextAlign.center,
       ),
     );
+  }
+
+  Widget getEntryList() {
+    return StreamBuilder(
+      stream: _myStrengthsBloc.myStrengths,
+      builder: (BuildContext context, AsyncSnapshot<List<Entry>> snapshot) {
+        return getEntryWiget(snapshot);
+      },
+    );
+  }
+
+  Widget getEntryWiget(AsyncSnapshot<List<Entry>> snapshot) {
+    if (snapshot.hasData) {
+      return snapshot.data.length != 0
+          ? ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, itemPosition) {
+                Entry entry = snapshot.data[itemPosition];
+                return entryContainer.entryContainer(context, entry.description);
+              },
+            )
+          : Container(
+              child: Center(
+              //this is used whenever there 0 Todo
+              //in the data base
+              child: noTodoMessageWidget(),
+            ));
+    } else {
+      return Center(
+        /*since most of our I/O operations are done
+        outside the main thread asynchronously
+        we may want to display a loading indicator
+        to let the use know the app is currently
+        processing*/
+        child: loadingData(),
+      );
+    }
+  }
+
+  Widget loadingData() {
+    //pull todos again
+    _myStrengthsBloc.getMyStrengths();
+    return Container(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CircularProgressIndicator(),
+            Text("Loading...",
+                style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget noTodoMessageWidget() {
+    return Container(
+      child: Text(
+        "Start adding Todo...",
+        style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+
+  dispose() {
+    _myStrengthsBloc.dispose();
   }
 }
