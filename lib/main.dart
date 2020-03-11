@@ -13,7 +13,7 @@ class MyStrengths extends StatelessWidget {
     return MaterialApp(
       theme: basicTheme(),
       // debugShowCheckedModeBanner: false  ,
-      home: MyStrenghtsList(date: DateTime.now(),),
+      home: MyStrenghtsList(),
     );
   }
 }

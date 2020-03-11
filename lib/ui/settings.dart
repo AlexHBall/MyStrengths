@@ -16,7 +16,6 @@ class SettingsState extends State<Settings> {
   bool isSwitched = true;
   final TextEditingController eCtrl = new TextEditingController();
   FrequencyBloc _frequencyBloc;
-  Containers myContainers = new Containers();
   Dialogs myDialogs = new Dialogs();
   static const namePreferenceKey = 'name';
   static const enabledPreferenceKey = 'enabled';
@@ -171,7 +170,7 @@ class SettingsState extends State<Settings> {
               })
           : Container(
               child: Center(
-              child: myContainers.noFrequencies(context),
+              child: NoFrequencies()
             ));
     } else {
       return Center(
@@ -181,8 +180,7 @@ class SettingsState extends State<Settings> {
   }
 
   Widget loadingData() {
-    //pull todos again
     _frequencyBloc.getFrequencies();
-    return myContainers.loadingContainer(context);
+    return LoadingContainer();
   }
 }

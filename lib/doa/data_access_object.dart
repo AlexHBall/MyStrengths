@@ -59,7 +59,6 @@ class MyStrengthsDao {
   }
 
   Future<List<Entry>> getDatesList(String date) async {
-    print(date);
     final db = await dbProvider.database;
     var entryMapList = await db.query(entryTable,
         where: "$colDate = '$date'", orderBy: '$colTime ASC');

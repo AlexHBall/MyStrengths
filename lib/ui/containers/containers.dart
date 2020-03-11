@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Containers {
-  entryContainer(BuildContext context, String text) {
-    return new Container(
+class EntryContainer extends StatelessWidget {
+  String text;
+  EntryContainer(String this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
         padding: EdgeInsets.only(left: 10),
         child: new Row(
           children: <Widget>[
@@ -20,8 +24,12 @@ class Containers {
           ],
         ));
   }
+}
 
-  loadingContainer(BuildContext context) {
+class LoadingContainer extends StatelessWidget {
+  LoadingContainer();
+  @override
+  Widget build(BuildContext context) {
     return Container(
       child: Center(
         child: Column(
@@ -36,8 +44,12 @@ class Containers {
       ),
     );
   }
+}
 
-  noFrequencies(BuildContext context) {
+class NoFrequencies extends StatelessWidget {
+  NoFrequencies();
+  @override
+  Widget build(BuildContext context) {
     return Container(
       child: Text(
         "Add a new notification below!",

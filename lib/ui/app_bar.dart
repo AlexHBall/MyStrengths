@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'settings.dart';
-import 'strength_list.dart';
 
-class MyAppBar {
-  appBar(BuildContext context) {
-    return new AppBar(
+class MyAppBar extends StatelessWidget with PreferredSizeWidget {
+  final Function(DateTime) onDateSelected;
+
+  MyAppBar(this.onDateSelected);
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
       title: new Text("My Strengths"),
       textTheme: Theme.of(context).textTheme,
       centerTitle: true,
@@ -14,12 +21,9 @@ class MyAppBar {
         ),
       ),
       actions: <Widget>[
-        // Theme(
-        // data: ThemeData.light(),
-        // child:
         IconButton(
           icon: Icon(Icons.date_range),
-          onPressed: ()  async {
+          onPressed: () async {
             var date = await showDatePicker(
               context: context,
               initialDate: DateTime.now(),
@@ -37,10 +41,9 @@ class MyAppBar {
                 );
               },
             );
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return MyStrenghtsList(date: date,);
-            }));            //TODO: Load the relevant entries for this date, and maybe disable entry button
-            //Would need to add a master date somewhere to accomodate for an entry on a different date
+            if (date != null) {
+              onDateSelected(date);
+            }
           },
           // )
         ),

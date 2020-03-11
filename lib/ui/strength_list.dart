@@ -15,10 +15,7 @@ DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm:ss");
 DateFormat daysFormat = DateFormat("dd-MM-yyyy");
 
 class MyStrenghtsList extends StatefulWidget {
-  final DateTime date;
-  const MyStrenghtsList({Key key, this.date}) : super(key: key);
-
-  @override 
+  @override
   State<StatefulWidget> createState() {
     return DyanmicList();
   }
@@ -33,14 +30,11 @@ class DyanmicList extends State<MyStrenghtsList> {
   final TextEditingController eCtrl = new TextEditingController();
   final notifications = FlutterLocalNotificationsPlugin();
 
-  MyAppBar myAppBar = new MyAppBar();
-  Containers myContainers = new Containers();
-
   @override
   void initState() {
     _initaliseNotificationPlugin();
-    _formattedDate = daysFormat.format(widget.date);
-    _myStrengthsBloc =MyStrengthsBloc(_formattedDate);
+    _formattedDate = daysFormat.format((DateTime.now()));
+    _myStrengthsBloc = MyStrengthsBloc(_formattedDate);
     super.initState();
   }
 
@@ -55,7 +49,7 @@ class DyanmicList extends State<MyStrenghtsList> {
       new Row(
         //TODO: Put this in a container and manage the date properly for when i press calendar
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text(daysFormat.format(widget.date))],
+        children: <Widget>[Text(_formattedDate)],
       ),
       new Padding(
         padding: EdgeInsets.only(
@@ -70,7 +64,7 @@ class DyanmicList extends State<MyStrenghtsList> {
       SizedBox(height: 25.0)
     ];
     return new Scaffold(
-      appBar: myAppBar.appBar(context),
+      appBar: MyAppBar(_handleDateChange),
       body: new Column(
         children: children2,
       ),
@@ -153,7 +147,7 @@ class DyanmicList extends State<MyStrenghtsList> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, itemPosition) {
                 Entry entry = snapshot.data[itemPosition];
-                return myContainers.entryContainer(context, entry.description);
+                return EntryContainer(entry.description);
               },
             )
           : Container(
@@ -170,13 +164,13 @@ class DyanmicList extends State<MyStrenghtsList> {
   Widget loadingData() {
     //pull todos again
     _myStrengthsBloc.getStrengths(_formattedDate);
-    return myContainers.loadingContainer(context);
+    return LoadingContainer();
   }
 
   Widget noTodoMessageWidget() {
     return Container(
       child: Text(
-        "Add a new entry below",
+        "No entries for the selected date",
         style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
       ),
     );
@@ -204,8 +198,15 @@ class DyanmicList extends State<MyStrenghtsList> {
     String date = now.substring(0, 10);
     String time = now.substring(11, 19);
     Entry newEntry = Entry(text, date, time);
-    _myStrengthsBloc.addStrength(newEntry,_formattedDate);
+    _myStrengthsBloc.addStrength(newEntry, _formattedDate);
     eCtrl.clear();
     return newEntry;
+  }
+
+  void _handleDateChange(DateTime date) {
+    setState(() {
+      this._formattedDate = daysFormat.format(date);
+    });
+    _myStrengthsBloc.getStrengths(_formattedDate);
   }
 }
