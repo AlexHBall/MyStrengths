@@ -3,6 +3,6 @@ import 'package:my_strengths/models/entry.dart';
 
 class MyStrengthsRepository {
   final myStrengthsDao = MyStrengthsDao();
-  Future getTodaysStrengths() => myStrengthsDao.getTodaysList();
+  Future getStrengths(String date) => myStrengthsDao.getDatesList(date);
   Future insertEntry(Entry entry) => myStrengthsDao.insertEntry(entry);
 }

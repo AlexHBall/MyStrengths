@@ -10,18 +10,18 @@ class MyStrengthsBloc {
 
   get myStrengths => _myStrengthsController.stream;
 
-  MyStrengthsBloc() {
-    getTodaysMyStrengths();
+  MyStrengthsBloc(String date) {
+    getStrengths(date);
   }
 
-  getTodaysMyStrengths() async {
+  getStrengths(String date) async {
     _myStrengthsController.sink
-        .add(await _myStrengthsRepository.getTodaysStrengths());
+        .add(await _myStrengthsRepository.getStrengths(date));
   }
 
-  addStrength(Entry entry) async {
+  addStrength(Entry entry, String date) async {
     await _myStrengthsRepository.insertEntry(entry);
-    getTodaysMyStrengths();
+    getStrengths(date);
   }
 
   dispose() {

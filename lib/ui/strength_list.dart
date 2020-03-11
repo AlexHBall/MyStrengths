@@ -25,8 +25,9 @@ class MyStrenghtsList extends StatefulWidget {
 }
 
 class DyanmicList extends State<MyStrenghtsList> {
+  String _formattedDate;
   List<Frequency> frequencies;
-  MyStrengthsBloc _myStrengthsBloc = MyStrengthsBloc();
+  MyStrengthsBloc _myStrengthsBloc;
   FrequencyBloc _frequencyBloc = FrequencyBloc();
 
   final TextEditingController eCtrl = new TextEditingController();
@@ -38,6 +39,8 @@ class DyanmicList extends State<MyStrenghtsList> {
   @override
   void initState() {
     _initaliseNotificationPlugin();
+    _formattedDate = daysFormat.format(widget.date);
+    _myStrengthsBloc =MyStrengthsBloc(_formattedDate);
     super.initState();
   }
 
@@ -166,7 +169,7 @@ class DyanmicList extends State<MyStrenghtsList> {
 
   Widget loadingData() {
     //pull todos again
-    _myStrengthsBloc.getTodaysMyStrengths();
+    _myStrengthsBloc.getStrengths(_formattedDate);
     return myContainers.loadingContainer(context);
   }
 
@@ -201,7 +204,7 @@ class DyanmicList extends State<MyStrenghtsList> {
     String date = now.substring(0, 10);
     String time = now.substring(11, 19);
     Entry newEntry = Entry(text, date, time);
-    _myStrengthsBloc.addStrength(newEntry);
+    _myStrengthsBloc.addStrength(newEntry,_formattedDate);
     eCtrl.clear();
     return newEntry;
   }

@@ -58,13 +58,16 @@ class MyStrengthsDao {
     return entryList;
   }
 
-  Future<List<Entry>> getTodaysList() async {
+  Future<List<Entry>> getDatesList(String date) async {
+    print(date);
     final db = await dbProvider.database;
     var entryMapList = await db.query(entryTable,
-        where: "$colDate = '$today'", orderBy: '$colTime ASC');
-    int count =
-        entryMapList.length; // Count the number of map entries in db table
+        where: "$colDate = '$date'", orderBy: '$colTime ASC');
+    return _getEntriesList(entryMapList);
+  }
 
+  List<Entry> _getEntriesList(var entryMapList) {
+    int count = entryMapList.length;
     List<Entry> entryList = List<Entry>();
     // For loop to create a 'Entry List' from a 'Map List'
     for (int i = 0; i < count; i++) {
