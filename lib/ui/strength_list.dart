@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -13,9 +12,13 @@ import 'package:my_strengths/bloc/my_strengths_bloc.dart';
 import 'package:my_strengths/bloc/frequency_bloc.dart';
 
 DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm:ss");
+DateFormat daysFormat = DateFormat("dd-MM-yyyy");
 
 class MyStrenghtsList extends StatefulWidget {
-  @override
+  final DateTime date;
+  const MyStrenghtsList({Key key, this.date}) : super(key: key);
+
+  @override 
   State<StatefulWidget> createState() {
     return DyanmicList();
   }
@@ -41,6 +44,16 @@ class DyanmicList extends State<MyStrenghtsList> {
   @override
   Widget build(BuildContext ctxt) {
     var children2 = <Widget>[
+      new Padding(
+        padding: EdgeInsets.only(
+          top: 20,
+        ),
+      ),
+      new Row(
+        //TODO: Put this in a container and manage the date properly for when i press calendar
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[Text(daysFormat.format(widget.date))],
+      ),
       new Padding(
         padding: EdgeInsets.only(
           top: 20,
@@ -72,7 +85,7 @@ class DyanmicList extends State<MyStrenghtsList> {
       for (int i = 0; i < frequencies.length; i++) {
         await _scheduleNotification(name, newEntry, frequencies[i]);
       }
-    } 
+    }
   }
 
   void _scheduleNotification(String name, Entry entry, Frequency frequency) {
@@ -153,14 +166,14 @@ class DyanmicList extends State<MyStrenghtsList> {
 
   Widget loadingData() {
     //pull todos again
-    _myStrengthsBloc.getMyStrengths();
+    _myStrengthsBloc.getTodaysMyStrengths();
     return myContainers.loadingContainer(context);
   }
 
   Widget noTodoMessageWidget() {
     return Container(
       child: Text(
-        "Start adding Todo...",
+        "Add a new entry below",
         style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
       ),
     );

@@ -11,17 +11,17 @@ class MyStrengthsBloc {
   get myStrengths => _myStrengthsController.stream;
 
   MyStrengthsBloc() {
-    getMyStrengths();
+    getTodaysMyStrengths();
   }
 
-  getMyStrengths() async {
+  getTodaysMyStrengths() async {
     _myStrengthsController.sink
         .add(await _myStrengthsRepository.getTodaysStrengths());
   }
 
   addStrength(Entry entry) async {
     await _myStrengthsRepository.insertEntry(entry);
-    getMyStrengths();
+    getTodaysMyStrengths();
   }
 
   dispose() {

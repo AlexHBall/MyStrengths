@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'settings.dart';
+import 'strength_list.dart';
 
 class MyAppBar {
   appBar(BuildContext context) {
@@ -18,8 +19,8 @@ class MyAppBar {
         // child:
         IconButton(
           icon: Icon(Icons.date_range),
-          onPressed: () {
-            var date = showDatePicker(
+          onPressed: ()  async {
+            var date = await showDatePicker(
               context: context,
               initialDate: DateTime.now(),
               firstDate: DateTime(2020),
@@ -36,7 +37,9 @@ class MyAppBar {
                 );
               },
             );
-            //TODO: Load the relevant entries for this date, and maybe disable entry button
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return MyStrenghtsList(date: date,);
+            }));            //TODO: Load the relevant entries for this date, and maybe disable entry button
             //Would need to add a master date somewhere to accomodate for an entry on a different date
           },
           // )
