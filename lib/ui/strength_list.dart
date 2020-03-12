@@ -4,10 +4,8 @@ import 'package:my_strengths/utils/custom_notification_creator.dart';
 import 'package:my_strengths/models/entry.dart';
 import 'package:my_strengths/ui/app_bar.dart';
 import 'package:my_strengths/ui/containers/containers.dart';
-import 'package:my_strengths/utils/text_helper.dart';
 import 'package:my_strengths/bloc/my_strengths_bloc.dart';
 
-DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm:ss");
 DateFormat daysFormat = DateFormat("dd-MM-yyyy");
 
 class MyStrenghtsList extends StatefulWidget {
