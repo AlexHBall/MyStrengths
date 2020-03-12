@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class EntryContainer extends StatelessWidget {
-  String text;
-  EntryContainer(String this.text);
+  EntryContainer(this.text);
+  final text;
 
   @override
   Widget build(BuildContext context) {

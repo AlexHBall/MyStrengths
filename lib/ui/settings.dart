@@ -161,7 +161,6 @@ class SettingsState extends State<Settings> {
                       if (delete) {
                         _frequencyBloc.deleteFrequency(frequency.id);
                       }
-                      ;
                     },
                     child: Text(
                       frequency.getNotificationString(),

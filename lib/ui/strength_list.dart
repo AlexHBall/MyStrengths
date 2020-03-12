@@ -33,7 +33,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   @override
   void initState() {
     _initaliseNotificationPlugin();
-    _formattedDate = daysFormat.format((DateTime.now()));
+    _formattedDate = daysFormat.format(DateTime.now());
     _myStrengthsBloc = MyStrengthsBloc(_formattedDate);
     super.initState();
   }
@@ -47,7 +47,6 @@ class DyanmicList extends State<MyStrenghtsList> {
         ),
       ),
       new Row(
-        //TODO: Put this in a container and manage the date properly for when i press calendar
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[Text(_formattedDate)],
       ),
@@ -85,7 +84,7 @@ class DyanmicList extends State<MyStrenghtsList> {
     }
   }
 
-  void _scheduleNotification(String name, Entry entry, Frequency frequency) {
+  Future _scheduleNotification(String name, Entry entry, Frequency frequency) {
     String text = entry.description;
     String date = entry.date;
 
@@ -170,7 +169,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   Widget noTodoMessageWidget() {
     return Container(
       child: Text(
-        "No entries for the selected date",
+        "No entries on $_formattedDate",
         style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
       ),
     );
@@ -194,10 +193,8 @@ class DyanmicList extends State<MyStrenghtsList> {
   }
 
   Entry _createNewEntry(String text) {
-    String now = dateFormat.format(DateTime.now());
-    String date = now.substring(0, 10);
-    String time = now.substring(11, 19);
-    Entry newEntry = Entry(text, date, time);
+    String date = _formattedDate;
+    Entry newEntry = Entry(text, date);
     _myStrengthsBloc.addStrength(newEntry, _formattedDate);
     eCtrl.clear();
     return newEntry;
