@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:my_strengths/utils/custom_notification_creator.dart';
 import 'package:my_strengths/models/entry.dart';
 import 'package:my_strengths/ui/app_bar.dart';
-import 'package:my_strengths/ui/containers/containers.dart';
+import 'package:my_strengths/ui/custom/containers.dart';
+import 'package:my_strengths/ui/custom/cards.dart';
 import 'package:my_strengths/bloc/my_strengths_bloc.dart';
 
 DateFormat daysFormat = DateFormat("dd-MM-yyyy");
@@ -28,8 +29,10 @@ class DyanmicList extends State<MyStrenghtsList> {
   }
 
   void _handleNewEntry(String text) async {
-    Entry newEntry = _createNewEntry(text);
+    Entry newEntry = Entry(text, _formattedDate);
+    _myStrengthsBloc.addStrength(newEntry, _formattedDate);
     notificationCreator.createNotifications(newEntry);
+    //TODO: Would a snackbar be too much?
   }
 
   @override
@@ -87,8 +90,9 @@ class DyanmicList extends State<MyStrenghtsList> {
           ? ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (context, itemPosition) {
+
                 Entry entry = snapshot.data[itemPosition];
-                return EntryContainer(entry.description);
+                return EntryCard(entry.description);
               },
             )
           : Container(
@@ -119,12 +123,5 @@ class DyanmicList extends State<MyStrenghtsList> {
 
   dispose() {
     _myStrengthsBloc.dispose();
-  }
-
-  Entry _createNewEntry(String text) {
-    String date = _formattedDate;
-    Entry newEntry = Entry(text, date);
-    _myStrengthsBloc.addStrength(newEntry, _formattedDate);
-    return newEntry;
   }
 }

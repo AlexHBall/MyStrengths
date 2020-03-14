@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:my_strengths/bloc/frequency_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,39 +32,20 @@ class CustomNotificationCreator {
     frequencies = await _frequencyBloc.getFrequenciesNow();
     if (frequencies.isNotEmpty) {
       for (int i = 0; i < frequencies.length; i++) {
-        await _createNotification(name, entry, frequencies[i]);
+        await _createNotification(name, entry, frequencies[i].duration);
       }
     }
   }
 
-  Future _createNotification(String name, Entry entry, Frequency frequency) {
+  Future _createNotification(String name, Entry entry, int duration) {
     String text = entry.description;
     String date = entry.date;
-
-    final duration = frequency.duration;
-    final type = frequency.timeType;
-
-    //TODO: Change the times here so they are random 
-    //throughout the day of the scheduled notification
-    if (type == 'D') {
-      scheduleNotification(notifications,
-          title: 'Congratulations $name!',
-          body: 'You did well with $text on the $date',
-          durationType: "days",
-          duration: duration);
-    } else if (type == 'W') {
-      scheduleNotification(notifications,
-          title: 'Congratulations $name!',
-          body: 'You did well with $text on the $date',
-          durationType: "weeks",
-          duration: duration);
-    } else {
-      // debugPrint("Didn't set notification");
-    }
-    return null;
+    scheduleNotification(notifications,
+        title: 'Congratulations $name!',
+        body: 'You did well with $text on the $date',
+        duration: duration);
   }
 }
-
 
 NotificationDetails get _ongoing {
   final androidChannelSpecifics = AndroidNotificationDetails(
@@ -96,20 +79,16 @@ Future showOngoingNotification(
 Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
     {@required String title,
     @required String body,
-    @required String durationType,
     @required int duration}) async {
-  var scheduledNotificationDateTime;
-  if (durationType == "hours") {
-    scheduledNotificationDateTime =
-        DateTime.now().add(Duration(hours: duration));
-  } else if (durationType == "seconds") {
-    scheduledNotificationDateTime =
-        DateTime.now().add(Duration(seconds: duration));
-  } else if (durationType == "days") {
-    scheduledNotificationDateTime =
-        DateTime.now().add(Duration(days: duration));
-  }
+  final now = DateTime.now();
+  final atMidnight = new DateTime(now.year, now.month, now.day);
+  final randomHours = _getRandomTime(22,8);
+  final randomMins = _getRandomTime(60,0);
+  final scheduleTime = new DateTime(atMidnight.year, atMidnight.month,
+      atMidnight.day + duration, randomHours, randomMins);
+
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    //TODO: What are these and why do they matter?
       'your other channel id',
       'your other channel name',
       'your other channel description');
@@ -117,6 +96,12 @@ Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
   var platformChannelSpecifics = NotificationDetails(
       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
   await notifications.schedule(
-      0, title, body, scheduledNotificationDateTime, platformChannelSpecifics);
-  print("Scheduled notification for $duration $durationType");
+      0, title, body, scheduleTime, platformChannelSpecifics);
+  print("Scheduled notification for $scheduleTime");
+}
+
+_getRandomTime(int maximum, int minimum) {
+  //TODO: Make these hours configurable in the settings?
+  Random random = new Random();
+  return random.nextInt(maximum) + minimum;
 }

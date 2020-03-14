@@ -85,11 +85,12 @@ class Dialogs {
             child: Container(
               child: Column(
                 children: <Widget>[
-                  new Expanded(
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[new Text('Remind me after')],
-                    ),
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text('Remind me after',
+                          style: new TextStyle(color: Colors.black))
+                    ],
                   ),
                   new Expanded(
                     child: new TextField(
@@ -111,19 +112,10 @@ class Dialogs {
                         new FlatButton(
                             onPressed: () {
                               int duration = int.parse(eCtrl.text.toString());
-                              Frequency frequency =
-                                  new Frequency('D', duration);
+                              Frequency frequency = new Frequency(duration);
                               Navigator.pop(context, frequency);
                             },
                             child: new Text('Day(s)')),
-                        new FlatButton(
-                          onPressed: () {
-                            int duration = int.parse(eCtrl.text.toString());
-                            Frequency frequency = new Frequency('W', duration);
-                            Navigator.pop(context, frequency);
-                          },
-                          child: new Text('Week(s)'),
-                        )
                       ],
                     ),
                   )

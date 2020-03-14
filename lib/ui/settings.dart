@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dialogs/dialogs.dart';
+import 'custom/dialogs.dart';
 import '../models/frequency.dart';
 import 'package:my_strengths/bloc/frequency_bloc.dart';
-import 'package:my_strengths/ui/containers/containers.dart';
+import 'package:my_strengths/ui/custom/containers.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -32,7 +32,7 @@ class SettingsState extends State<Settings> {
   void initState() {
     _frequencyBloc = new FrequencyBloc();
     super.initState();
-    _getPreferences();
+     _getPreferences();
   }
 
   _getPreferences() async {
@@ -42,11 +42,13 @@ class SettingsState extends State<Settings> {
       oldName = name;
       setState(() {});
     }
+
     bool switched = prefs.getBool(enabledPreferenceKey);
-    debugPrint('Switched $switched');
-    setState(() {
-      isSwitched = switched;
-    });
+    if (switched != null) {
+      setState(() {
+        isSwitched = switched;
+      });
+    }
   }
 
   @override
@@ -167,10 +169,7 @@ class SettingsState extends State<Settings> {
                       style: Theme.of(context).textTheme.body2,
                     ));
               })
-          : Container(
-              child: Center(
-              child: NoFrequencies()
-            ));
+          : Container(child: Center(child: NoFrequencies()));
     } else {
       return Center(
         child: loadingData(),
