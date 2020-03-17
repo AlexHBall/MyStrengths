@@ -3,8 +3,8 @@ import 'settings.dart';
 
 class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   final Function(DateTime) onDateSelected;
-
-  MyAppBar(this.onDateSelected);
+  final String date;
+  MyAppBar(this.date, this.onDateSelected);
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -12,14 +12,14 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: new Text("My Strengths"),
+      title: new Text(date),
       textTheme: Theme.of(context).textTheme,
       centerTitle: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(15),
-        ),
-      ),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.vertical(
+      //     bottom: Radius.circular(15),
+      //   ),
+      // ),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.date_range),

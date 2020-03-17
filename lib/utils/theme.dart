@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //The purpose here is COLOURS, FONTS, TEXT STYLES
 ThemeData basicTheme() {
-  String fontFamily = 'Playfair';
+  String fontFamily = 'Baloo';
 
   TextTheme _basicTextTheme(TextTheme base) {
     return base.copyWith(
@@ -13,13 +13,14 @@ ThemeData basicTheme() {
         ),
         title: base.title.copyWith(
             fontFamily: fontFamily,
-            fontSize: 30.0,
+            fontSize: 35.0,
             color: Colors.white70,
-            fontStyle: FontStyle.italic),
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.bold),
         display1: base.headline.copyWith(
           fontFamily: fontFamily,
-          fontSize: 24.0,
-          color: Colors.white30,
+          fontSize: 28.0,
+          color: Colors.white70,
         ),
         display2: base.headline.copyWith(
           fontFamily: fontFamily,
@@ -33,7 +34,7 @@ ThemeData basicTheme() {
             color: Colors.white,
             fontFamily: fontFamily,
             fontSize: 20,
-            fontStyle: FontStyle.italic),
+            fontStyle: FontStyle.normal),
         body2:
             base.body2.copyWith(color: Colors.white, fontFamily: fontFamily));
   }

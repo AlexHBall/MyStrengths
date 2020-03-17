@@ -43,35 +43,24 @@ class DyanmicList extends State<MyStrenghtsList> {
     super.initState();
   }
 
+  Column newColumn() {
+    return new Column(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text("Entries"),
+          Expanded(
+            child: getEntryList(),
+          ),
+          StrengthInputContainer(_handleNewEntry),
+          SizedBox(height: 25.0),
+        ]);
+  }
+
   @override
-  Widget build(BuildContext ctxt) {
-    var children2 = <Widget>[
-      new Padding(
-        padding: EdgeInsets.only(
-          top: 20,
-        ),
-      ),
-      new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text(_formattedDate)],
-      ),
-      new Padding(
-        padding: EdgeInsets.only(
-          top: 20,
-        ),
-      ),
-      new Expanded(
-        child: getEntryList(),
-      ),
-      SizedBox(height: 25.0),
-      InputContainer(_handleNewEntry),
-      SizedBox(height: 25.0)
-    ];
+  Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: MyAppBar(_handleDateChange),
-      body: new Column(
-        children: children2,
-      ),
+      appBar: MyAppBar(_formattedDate, _handleDateChange),
+      body: newColumn(),
     );
   }
 
@@ -90,7 +79,6 @@ class DyanmicList extends State<MyStrenghtsList> {
           ? ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (context, itemPosition) {
-
                 Entry entry = snapshot.data[itemPosition];
                 return EntryCard(entry.description);
               },

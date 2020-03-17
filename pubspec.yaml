@@ -47,11 +47,11 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   fonts:
-    - family: Playfair
+    - family: Baloo
       fonts:
-        - asset: fonts/PlayfairDisplay-VariableFont.ttf
-        - asset: fonts/PlayfairDisplay-Italic-VariableFont.ttf
-          style: italic
+        - asset: fonts/BalooBhai2-Regular.ttf
+        - asset: fonts/BalooBhai2-SemiBold.ttf
+          weight: 500
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
