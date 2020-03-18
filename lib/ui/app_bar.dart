@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_strengths/ui/custom_calendar.dart';
 import 'settings.dart';
 
 class MyAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -15,41 +16,24 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
       title: new Text(date),
       textTheme: Theme.of(context).textTheme,
       centerTitle: true,
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.vertical(
-      //     bottom: Radius.circular(15),
-      //   ),
-      // ),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.date_range),
           onPressed: () async {
-            var date = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2100),
-              builder: (BuildContext context, Widget child) {
-                return Theme(
-                  data: ThemeData.light().copyWith(
-                      // primarySwatch: buttonTextColor,//OK/Cancel button text color
-                      primaryColor: const Color(0xFF4A5BF6), //Head background
-                      accentColor: const Color(0xFF4A5BF6) //selection color
-                      //dialogBackgroundColor: Colors.white,//Background color
-                      ),
-                  child: child,
-                );
-              },
-            );
+            var date = await Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return CalendarScreen();
+            }));
+            print("Date $date");
             if (date != null) {
               onDateSelected(date);
             }
-          },
-          // )
+          }
         ),
         IconButton(
           icon: Icon(Icons.settings),
           onPressed: () {
+            //TODO: New page where you can see the date like this
+            // https://dribbble.com/shots/8929931-FitKiddo-Mobile-App-Home-Stats
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return Settings();
             }));
