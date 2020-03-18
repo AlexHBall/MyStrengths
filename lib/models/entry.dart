@@ -1,4 +1,8 @@
+import 'package:intl/intl.dart';
+
 class Entry {
+  DateFormat daysFormat = DateFormat("dd-MM-yyyy");
+
   int _id;
   String _description;
   String _date;
@@ -33,6 +37,10 @@ class Entry {
     this._id = map['id'];
     this._description = map['description'];
     this._date = map['date'];
+  }
+
+  DateTime getDateTime(){
+    return daysFormat.parse(date);
   }
 
 @override String toString() {

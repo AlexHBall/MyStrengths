@@ -25,6 +25,23 @@ class MyStrengthsDao {
     return result;
   }
 
+  Future<List<DateTime>> getUniqueDates() async {
+    final db = await dbProvider.database;
+    var result = await db.rawQuery(
+        "SELECT DISTINCT $colDate FROM $entryTable ORDER BY $colDate;");
+
+    var entries = _getEntriesList(result);
+    return _getDatesFromEntries(entries);
+  }
+
+  List<DateTime> _getDatesFromEntries(List<Entry> entries) {
+    List<DateTime> dates = List<DateTime>();
+    for (int i = 0; i < entries.length; i++) {
+      dates.add(entries[i].getDateTime());
+    }
+    return dates;
+  }
+
   Future<int> insertEntry(Entry entry) async {
     final db = await dbProvider.database;
     var result = await db.insert(entryTable, entry.toMap());
@@ -58,7 +75,7 @@ class MyStrengthsDao {
     return entryList;
   }
 
-  Future<List<Entry>> getDatesList(String date) async {
+  Future<List<Entry>> getStrengthsOnDate(String date) async {
     final db = await dbProvider.database;
     var entryMapList = await db.query(entryTable,
         where: "$colDate = '$date'", orderBy: '$colTime ASC');

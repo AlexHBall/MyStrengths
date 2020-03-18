@@ -3,30 +3,34 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel, WeekdayFormat;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
-import 'package:my_strengths/ui/custom/icons.dart';
+import 'package:my_strengths/doa/data_access_object.dart';
 
 class CalendarScreen extends StatelessWidget {
-  CalendarScreen();
-
+  final EventList<Event> eventList;
+  CalendarScreen(this.eventList);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Select a date"),
       ),
-      body: CustomCalendar(),
+      body: CustomCalendar(eventList),
     );
   }
 }
 
 class CustomCalendar extends StatelessWidget {
+  final EventList<Event> eventList;
+
+  CustomCalendar(this.eventList);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(20.0),
       child: CalendarCarousel<Event>(
         onDayPressed: (DateTime date, List<Event> events) {
-          Navigator.pop(context,date);
+          Navigator.pop(context, date);
         },
         thisMonthDayBorderColor: Colors.transparent,
         selectedDayButtonColor: Color(0xFF4f83cc),
@@ -45,7 +49,7 @@ class CustomCalendar extends StatelessWidget {
         selectedDateTime: DateTime.now(),
         daysHaveCircularBorder: true,
         customGridViewPhysics: NeverScrollableScrollPhysics(),
-        markedDatesMap: _getCarouselMarkedDates(),
+        markedDatesMap: eventList,
         markedDateWidget: Container(
           height: 7,
           width: 7,
@@ -57,20 +61,6 @@ class CustomCalendar extends StatelessWidget {
         ),
         // markedDateShowIcon: true,
       ),
-    );
-  }
-
-  EventList<Event> _getCarouselMarkedDates() {
-    //TODO: How to get the list of days from api?
-    return EventList<Event>(
-      events: {
-        new DateTime(2020, 3, 4): [
-          new Event(
-            date: new DateTime.now(),
-            title: 'Event 1',
-          ),
-        ],
-      },
     );
   }
 }
