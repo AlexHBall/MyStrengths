@@ -103,7 +103,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   Widget noTodoMessageWidget() {
     return Container(
       child: Text(
-        "No entries on $_formattedDate",
+        "No entries yet",
         style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
       ),
     );

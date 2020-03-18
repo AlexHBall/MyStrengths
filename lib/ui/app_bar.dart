@@ -30,14 +30,12 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
             for (int i=0; i < dates.length; i++){
               Event event = new Event(date: dates[i]);
               eventList.add(dates[i], event);
-              print("EventList " + eventList.toString());
             }
 
 
             var date = await Navigator.push(context, MaterialPageRoute(builder: (context) {
               return CalendarScreen(eventList);
             }));
-            print("Date $date");
             if (date != null) {
               onDateSelected(date);
             }

@@ -49,9 +49,11 @@ class StrengthInputContainer extends StatelessWidget {
           child: Container(
             decoration: MyDecorator.getOldDecorator(),
             child: new TextField(
+              // autofocus: true,
               style: Theme.of(context).textTheme.body2,
               controller: eCtrl,
               onSubmitted: (String text) async {
+                //TODO: Make sure this can't be empty
                 eCtrl.clear();
                 //TODO: randomly change the message promt;
                 onSubmitted(text);
