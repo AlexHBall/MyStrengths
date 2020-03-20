@@ -5,7 +5,7 @@ import 'package:my_strengths/models/entry.dart';
 import 'package:my_strengths/ui/app_bar.dart';
 import 'package:my_strengths/ui/custom/containers.dart';
 import 'package:my_strengths/ui/custom/cards.dart';
-import 'package:my_strengths/bloc/my_strengths_bloc.dart';
+import 'package:my_strengths/bloc/bloc.dart';
 
 DateFormat daysFormat = DateFormat("dd-MM-yyyy");
 
@@ -18,19 +18,19 @@ class MyStrenghtsList extends StatefulWidget {
 
 class DyanmicList extends State<MyStrenghtsList> {
   String _formattedDate;
-  MyStrengthsBloc _myStrengthsBloc;
+  EntryBloc _myStrengthsBloc;
   CustomNotificationCreator notificationCreator;
 
   void _handleDateChange(DateTime date) {
     setState(() {
       this._formattedDate = daysFormat.format(date);
     });
-    _myStrengthsBloc.getStrengths(_formattedDate);
+    _myStrengthsBloc.getEntries(_formattedDate);
   }
 
   void _handleNewEntry(String text) async {
     Entry newEntry = Entry(text, _formattedDate);
-    _myStrengthsBloc.addStrength(newEntry, _formattedDate);
+    _myStrengthsBloc.addEntry(newEntry, _formattedDate);
     notificationCreator.createNotifications(newEntry);
   }
 
@@ -38,7 +38,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   void initState() {
     notificationCreator = CustomNotificationCreator();
     _formattedDate = daysFormat.format(DateTime.now());
-    _myStrengthsBloc = MyStrengthsBloc(_formattedDate);
+    _myStrengthsBloc = EntryBloc(_formattedDate);
     super.initState();
   }
 
@@ -94,8 +94,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   }
 
   Widget loadingData() {
-    //pull todos again
-    _myStrengthsBloc.getStrengths(_formattedDate);
+    _myStrengthsBloc.getEntries(_formattedDate);
     return LoadingContainer();
   }
 
