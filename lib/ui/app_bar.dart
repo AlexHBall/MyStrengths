@@ -17,10 +17,10 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   Future<bool> _getVisible(SharedPreferences prefs) async {
     const enabledPreferenceKey = 'enabled';
     bool switched = prefs.getBool(enabledPreferenceKey);
-    if (switched = null) {
-      return false;
+    if (switched != null) {
+      return switched;
     }
-    return switched;
+    return false;
   }
 
   Future<String> _getName(SharedPreferences prefs) async {
@@ -59,11 +59,10 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
           icon: Icon(Icons.settings),
           onPressed: () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
-            // bool switched = await _getVisible(prefs);
-            // print("switched $switched");
+            bool switched = await _getVisible(prefs);
             String name = await _getName(prefs);
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Settings(true, name);
+              return Settings(switched, name);
             }));
           },
         ),
