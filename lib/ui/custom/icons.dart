@@ -15,3 +15,18 @@ class InputIcon extends StatelessWidget {
     );
   }
 }
+
+class NotificationIcon extends StatelessWidget {
+
+  NotificationIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.alarm),
+      iconSize: 35,
+      color: Colors.white, //TODO: Why isn't this white?
+      onPressed: null,
+    );
+  }
+}

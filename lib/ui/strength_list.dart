@@ -32,7 +32,6 @@ class DyanmicList extends State<MyStrenghtsList> {
     Entry newEntry = Entry(text, _formattedDate);
     _myStrengthsBloc.addStrength(newEntry, _formattedDate);
     notificationCreator.createNotifications(newEntry);
-    //TODO: Would a snackbar be too much?
   }
 
   @override
@@ -110,6 +109,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   }
 
   dispose() {
+    super.dispose();
     _myStrengthsBloc.dispose();
   }
 }

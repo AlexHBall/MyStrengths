@@ -37,7 +37,7 @@ class CustomNotificationCreator {
     }
   }
 
-  Future _createNotification(String name, Entry entry, int duration) {
+  _createNotification(String name, Entry entry, int duration) {
     String text = entry.description;
     String date = entry.date;
     scheduleNotification(notifications,
@@ -82,13 +82,13 @@ Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
     @required int duration}) async {
   final now = DateTime.now();
   final atMidnight = new DateTime(now.year, now.month, now.day);
-  final randomHours = _getRandomTime(22,8);
-  final randomMins = _getRandomTime(60,0);
+  final randomHours = _getRandomTime(22, 8);
+  final randomMins = _getRandomTime(60, 0);
   final scheduleTime = new DateTime(atMidnight.year, atMidnight.month,
       atMidnight.day + duration, randomHours, randomMins);
 
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    //TODO: What are these and why do they matter?
+      //TODO: What are these and why do they matter?
       'your other channel id',
       'your other channel name',
       'your other channel description');

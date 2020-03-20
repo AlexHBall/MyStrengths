@@ -53,10 +53,11 @@ class StrengthInputContainer extends StatelessWidget {
               style: Theme.of(context).textTheme.body2,
               controller: eCtrl,
               onSubmitted: (String text) async {
-                //TODO: Make sure this can't be empty
+                if (text != null) {
+                  onSubmitted(text);
+                }
                 eCtrl.clear();
                 //TODO: randomly change the message promt;
-                onSubmitted(text);
               },
               decoration: InputDecoration(
                   hintText: TextHelper.getPromptMessage(),
@@ -66,44 +67,6 @@ class StrengthInputContainer extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class DisplayNameContainer extends StatelessWidget {
-  final String name;
-  DisplayNameContainer(this.name);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: new EdgeInsets.all(25.0),
-      child: Text("Hello $name", style: Theme.of(context).textTheme.display1),
-      decoration: BoxDecoration(
-        border: new Border.all(
-          // color: Colors.green,
-          width: 5.0,
-        ),
-      ),
-    );
-  }
-}
-
-class DisplayDateContainer extends StatelessWidget {
-  final String date;
-  DisplayDateContainer(this.date);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: new EdgeInsets.all(25.0),
-      child: Text("$date", style: Theme.of(context).textTheme.display1),
-      // decoration: BoxDecoration(
-      //   border: new Border.all(
-      //     // color: Colors.green,
-      //     width: 5.0,
-      //   ),
-      // ),
     );
   }
 }

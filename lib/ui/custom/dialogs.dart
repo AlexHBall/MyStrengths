@@ -100,7 +100,6 @@ class Dialogs {
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       inputFormatters: <TextInputFormatter>[
-                        //TODO: make sure this can't be 0
                         WhitelistingTextInputFormatter.digitsOnly,
                       ],
                     ),
@@ -112,8 +111,10 @@ class Dialogs {
                         new FlatButton(
                             onPressed: () {
                               int duration = int.parse(eCtrl.text.toString());
-                              Frequency frequency = new Frequency(duration);
-                              Navigator.pop(context, frequency);
+                              if (duration > 0) {
+                                Frequency frequency = new Frequency(duration);
+                                Navigator.pop(context, frequency);
+                              }
                             },
                             child: new Text('Day(s)')),
                       ],
