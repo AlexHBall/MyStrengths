@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_strengths/utils/custom_notification_creator.dart';
-import 'package:my_strengths/models/entry.dart';
+import 'package:my_strengths/models/models.dart';
 import 'package:my_strengths/ui/app_bar.dart';
 import 'package:my_strengths/ui/custom/containers.dart';
 import 'package:my_strengths/ui/custom/cards.dart';

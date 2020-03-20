@@ -27,13 +27,20 @@ class CustomNotificationCreator {
 
   void createNotifications(Entry entry) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String name = prefs.getString('name');
+    const enabledPreferenceKey = 'enabled';
+    bool switched = prefs.getBool(enabledPreferenceKey);
 
-    frequencies = await _frequencyBloc.getFrequenciesNow();
-    if (frequencies.isNotEmpty) {
-      for (int i = 0; i < frequencies.length; i++) {
-        await _createNotification(name, entry, frequencies[i].duration);
+    if (switched) {
+      String name = prefs.getString('name');
+
+      frequencies = await _frequencyBloc.getFrequenciesNow();
+      if (frequencies.isNotEmpty) {
+        for (int i = 0; i < frequencies.length; i++) {
+          await _createNotification(name, entry, frequencies[i].duration);
+        }
       }
+    } else {
+      print("Notifications disabled");
     }
   }
 
