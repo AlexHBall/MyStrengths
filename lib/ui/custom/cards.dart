@@ -66,7 +66,6 @@ class NameCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Container child = Container(
         child: new Column(
-      // mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text("Name"),
         TextFormField(

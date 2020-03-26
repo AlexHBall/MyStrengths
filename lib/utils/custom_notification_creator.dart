@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:my_strengths/bloc/frequency_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -95,7 +94,7 @@ Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
       atMidnight.day + duration, randomHours, randomMins);
 
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      //TODO: What are these and why do they matter?
+      // What are these and why do they matter?
       'your other channel id',
       'your other channel name',
       'your other channel description');
@@ -108,7 +107,7 @@ Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
 }
 
 _getRandomTime(int maximum, int minimum) {
-  //TODO: Make these hours configurable in the settings?
+  //TODO: Make these hours configurable in the settings
   Random random = new Random();
   return random.nextInt(maximum) + minimum;
 }

@@ -8,7 +8,7 @@ class EntryBloc {
 
   final _entryController = StreamController<List<Entry>>.broadcast();
 
-  get myStrengths => _entryController.stream;
+  get myEntries => _entryController.stream;
 
   EntryBloc(String date) {
     getEntries(date);
@@ -25,5 +25,9 @@ class EntryBloc {
 
   dispose() {
     _entryController.close();
+  }
+
+  deleteEntry(int id) async {
+    await _entryRepository.deleteEntry(id);
   }
 }

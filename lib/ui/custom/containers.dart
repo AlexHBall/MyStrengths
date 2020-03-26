@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_strengths/ui/custom/box_decoration.dart';
-import 'package:my_strengths/utils/text_helper.dart';
 
 class LoadingContainer extends StatelessWidget {
   LoadingContainer();
@@ -34,12 +33,36 @@ class NoFrequencies extends StatelessWidget {
   }
 }
 
+class DeleteContainer extends StatelessWidget {
+  DeleteContainer();
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Center(
+            child: Text(
+              'Delete',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          SizedBox(width: 30.0),
+        ],
+      ),
+      color: Colors.red,
+    );
+  }
+}
+
 class StrengthInputContainer extends StatelessWidget {
   final Function(String) onSubmitted;
 
   final TextEditingController eCtrl = new TextEditingController();
-
-  StrengthInputContainer(this.onSubmitted);
+  final InputDecoration decoration;
+  StrengthInputContainer(this.onSubmitted, this.decoration);
+  // StrengthInputContainer(this.onSubmitted);
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +79,8 @@ class StrengthInputContainer extends StatelessWidget {
                 if (text != null) {
                   onSubmitted(text);
                 }
-                eCtrl.clear();
-                //TODO: randomly change the message promt;
               },
-              decoration: InputDecoration(
-                  hintText: TextHelper.getPromptMessage(),
-                  hintStyle: Theme.of(context).textTheme.body2),
+              decoration: decoration,
               textAlign: TextAlign.center,
             ),
           ),

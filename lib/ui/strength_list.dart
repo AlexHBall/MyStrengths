@@ -6,6 +6,7 @@ import 'package:my_strengths/ui/app_bar.dart';
 import 'package:my_strengths/ui/custom/containers.dart';
 import 'package:my_strengths/ui/custom/cards.dart';
 import 'package:my_strengths/bloc/bloc.dart';
+import 'package:my_strengths/utils/text_helper.dart';
 
 DateFormat daysFormat = DateFormat("dd-MM-yyyy");
 
@@ -18,31 +19,52 @@ class MyStrenghtsList extends StatefulWidget {
 
 class DyanmicList extends State<MyStrenghtsList> {
   String _formattedDate;
-  EntryBloc _myStrengthsBloc;
+  EntryBloc _myEntryBloc;
   CustomNotificationCreator notificationCreator;
+  InputDecoration _decoration;
+  final _snackBar = SnackBar(
+    content: Text('Undo Deletion!'),
+    action: SnackBarAction(
+      label: 'Undo',
+      onPressed: () {
+        // Some code to undo the change.
+      },
+    ),
+  );
+
+  InputDecoration _getDecorator() {
+    return InputDecoration(
+        hintText: TextHelper.getPromptMessage(),
+        hintStyle: Theme.of(context).textTheme.body2);
+  }
 
   void _handleDateChange(DateTime date) {
     setState(() {
       this._formattedDate = daysFormat.format(date);
     });
-    _myStrengthsBloc.getEntries(_formattedDate);
+    _myEntryBloc.getEntries(_formattedDate);
   }
 
   void _handleNewEntry(String text) async {
     Entry newEntry = Entry(text, _formattedDate);
-    _myStrengthsBloc.addEntry(newEntry, _formattedDate);
+    _myEntryBloc.addEntry(newEntry, _formattedDate);
     notificationCreator.createNotifications(newEntry);
+    setState(() {
+      _decoration = _getDecorator();
+    });
   }
 
   @override
   void initState() {
     notificationCreator = CustomNotificationCreator();
     _formattedDate = daysFormat.format(DateTime.now());
-    _myStrengthsBloc = EntryBloc(_formattedDate);
+    _myEntryBloc = EntryBloc(_formattedDate);
     super.initState();
   }
 
   Column newColumn() {
+    _decoration = _getDecorator();
+
     return new Column(
         // mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -50,7 +72,8 @@ class DyanmicList extends State<MyStrenghtsList> {
           Expanded(
             child: getEntryList(),
           ),
-          StrengthInputContainer(_handleNewEntry),
+          StrengthInputContainer(_handleNewEntry, _decoration),
+          // StrengthInputContainer(_handleNewEntry),
           SizedBox(height: 25.0),
         ]);
   }
@@ -65,7 +88,7 @@ class DyanmicList extends State<MyStrenghtsList> {
 
   Widget getEntryList() {
     return StreamBuilder(
-      stream: _myStrengthsBloc.myStrengths,
+      stream: _myEntryBloc.myEntries,
       builder: (BuildContext context, AsyncSnapshot<List<Entry>> snapshot) {
         return getEntryWiget(snapshot);
       },
@@ -79,7 +102,23 @@ class DyanmicList extends State<MyStrenghtsList> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, itemPosition) {
                 Entry entry = snapshot.data[itemPosition];
-                return EntryCard(entry.description);
+                return Dismissible(
+                  onDismissed: (DismissDirection direction) {
+                    //TODO: implement a way to swipe and edit
+                    if (direction == DismissDirection.endToStart) {
+                      _myEntryBloc.deleteEntry(entry.id);
+                      Scaffold.of(context).showSnackBar(_snackBar);
+                    } else {
+                      debugPrint("I want to edit the entry");
+                    }
+                    _myEntryBloc.getEntries(_formattedDate);
+                  },
+                  secondaryBackground: DeleteContainer(),
+                  background: Container(),
+                  child: EntryCard(entry.description),
+                  key: UniqueKey(),
+                  direction: DismissDirection.endToStart,
+                );
               },
             )
           : Container(
@@ -94,7 +133,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   }
 
   Widget loadingData() {
-    _myStrengthsBloc.getEntries(_formattedDate);
+    _myEntryBloc.getEntries(_formattedDate);
     return LoadingContainer();
   }
 
@@ -109,6 +148,6 @@ class DyanmicList extends State<MyStrenghtsList> {
 
   dispose() {
     super.dispose();
-    _myStrengthsBloc.dispose();
+    _myEntryBloc.dispose();
   }
 }

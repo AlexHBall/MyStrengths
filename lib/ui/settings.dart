@@ -118,6 +118,7 @@ class SettingsState extends State<Settings> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, itemPosition) {
                 Frequency frequency = snapshot.data[itemPosition];
+//TODO: replace gesture detor with swipable like entries
                 return new GestureDetector(
                     onLongPress: () async {
                       final delete = await myDialogs.deleteDialog(context);
