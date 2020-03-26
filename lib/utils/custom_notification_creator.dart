@@ -29,7 +29,7 @@ class CustomNotificationCreator {
     const enabledPreferenceKey = 'enabled';
     bool switched = prefs.getBool(enabledPreferenceKey);
 
-    if (switched) {
+    if (switched != null) {
       String name = prefs.getString('name');
 
       frequencies = await _frequencyBloc.getFrequenciesNow();

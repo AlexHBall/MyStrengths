@@ -22,12 +22,14 @@ class DyanmicList extends State<MyStrenghtsList> {
   EntryBloc _myEntryBloc;
   CustomNotificationCreator notificationCreator;
   InputDecoration _decoration;
+  int idJustDeleted;
+
   final _snackBar = SnackBar(
     content: Text('Undo Deletion!'),
     action: SnackBarAction(
       label: 'Undo',
       onPressed: () {
-        // Some code to undo the change.
+        return true;
       },
     ),
   );
@@ -38,6 +40,21 @@ class DyanmicList extends State<MyStrenghtsList> {
         hintStyle: Theme.of(context).textTheme.body2);
   }
 
+  void showSnackBar(BuildContext context, Entry entry) {
+    SnackBar snackBar = SnackBar(
+      content: Text('Deleted '),
+      action: SnackBarAction(
+        label: "UNDO",
+        onPressed: () {
+          entry.softDelete = 0;
+          _myEntryBloc.updateEntry(entry);
+          _myEntryBloc.getEntries(_formattedDate);
+        },
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
   void _handleDateChange(DateTime date) {
     setState(() {
       this._formattedDate = daysFormat.format(date);
@@ -46,7 +63,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   }
 
   void _handleNewEntry(String text) async {
-    Entry newEntry = Entry(text, _formattedDate);
+    Entry newEntry = Entry(text, _formattedDate, 'Default Input Text');
     _myEntryBloc.addEntry(newEntry, _formattedDate);
     notificationCreator.createNotifications(newEntry);
     setState(() {
@@ -103,15 +120,15 @@ class DyanmicList extends State<MyStrenghtsList> {
               itemBuilder: (context, itemPosition) {
                 Entry entry = snapshot.data[itemPosition];
                 return Dismissible(
-                  onDismissed: (DismissDirection direction) {
-                    //TODO: implement a way to swipe and edit
+                  onDismissed: (DismissDirection direction) async {
                     if (direction == DismissDirection.endToStart) {
-                      _myEntryBloc.deleteEntry(entry.id);
-                      Scaffold.of(context).showSnackBar(_snackBar);
+                      entry.softDelete = 1;
+                      _myEntryBloc.updateEntry(entry);
+                      showSnackBar(context, entry);
                     } else {
+                      //TODO: implement a way to swipe and edit
                       debugPrint("I want to edit the entry");
                     }
-                    _myEntryBloc.getEntries(_formattedDate);
                   },
                   secondaryBackground: DeleteContainer(),
                   background: Container(),

@@ -27,7 +27,7 @@ class EntryBloc {
     _entryController.close();
   }
 
-  deleteEntry(int id) async {
-    await _entryRepository.deleteEntry(id);
+  updateEntry(Entry entry) async {
+    await _entryRepository.updateEntry(entry);
   }
 }

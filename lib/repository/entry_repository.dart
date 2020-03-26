@@ -5,5 +5,5 @@ class EntryRepository {
   final myStrengthsDao = MyStrengthsDao();
   Future getEntries(String date) => myStrengthsDao.getEntriesOnDate(date);
   Future insertEntry(Entry entry) => myStrengthsDao.insertEntry(entry);
-  Future deleteEntry(int id) => myStrengthsDao.deleteEntry(id);
+  Future updateEntry(Entry entry) => myStrengthsDao.updateEntry(entry);
 }

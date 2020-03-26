@@ -10,7 +10,8 @@ final String frequencyTable = 'Frequency_table';
 final String colId = 'id';
 final String colDescription = 'description';
 final String colDate = 'date';
-final String colTime = 'time';
+final String colInputText = 'inputText';
+final String colSoftDelete = "softDelete";
 final String colTimeType = 'timeType';
 final String colDuration = 'duration';
 
@@ -50,15 +51,8 @@ class MyStrengthsDao {
 
   Future<int> updateEntry(Entry entry) async {
     final db = await dbProvider.database;
-    var result = await db.update(entryTable, entry.toMap(),
-        where: '$colId = ?', whereArgs: [entry.id]);
-    return result;
-  }
-
-  Future<int> deleteEntry(int id) async {
-    final db = await dbProvider.database;
-    int result =
-        await db.rawDelete('DELETE FROM $entryTable WHERE $colId = $id');
+    int result = await db.update(entryTable, entry.toMap(),
+        where: "id = ?", whereArgs: [entry.id]);
     return result;
   }
 
@@ -78,15 +72,16 @@ class MyStrengthsDao {
   Future<List<Entry>> getEntriesOnDate(String date) async {
     final db = await dbProvider.database;
     var entryMapList = await db.query(entryTable,
-        where: "$colDate = '$date'", orderBy: '$colTime ASC');
+        where: "$colDate = '$date' AND $colSoftDelete = '0'", orderBy: '$colDate ASC');
     return _getEntriesList(entryMapList);
   }
 
   List<Entry> _getEntriesList(var entryMapList) {
-    int count = entryMapList.length;
     List<Entry> entryList = List<Entry>();
-    // For loop to create a 'Entry List' from a 'Map List'
-    for (int i = 0; i < count; i++) {
+    List<Entry> visibleEntries = List<Entry>();
+
+    List<int> removeIndex = List<int>();
+    for (int i = 0; i < entryMapList.length; i++) {
       entryList.add(Entry.fromMapObject(entryMapList[i]));
     }
     return entryList;

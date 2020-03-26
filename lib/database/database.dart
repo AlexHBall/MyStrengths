@@ -9,7 +9,8 @@ final String frequencyTable = 'Frequency_table';
 final String colId = 'id';
 final String colDescription = 'description';
 final String colDate = 'date';
-final String colTime = 'time';
+final String colInputText = 'inputText';
+final String colSoftDelete = "softDelete";
 final String colTimeType = 'timeType';
 final String colDuration = 'duration';
 
@@ -24,11 +25,10 @@ class DatabaseProvider {
 
   createDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    //"ReactiveTodo.db is our database instance name
     String path = join(documentsDirectory.path, "MyStengths.db");
     var database = await openDatabase(path,
         version: 1, onCreate: initDB, onUpgrade: onUpgrade);
-
+    print("DBPath $path");
     return database;
   }
 
@@ -40,7 +40,7 @@ class DatabaseProvider {
   void initDB(Database db, int version) async {
     await db.execute(
         'CREATE TABLE $entryTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colDescription TEXT, '
-        '$colDate TEXT, $colTime TEXT)');
+        '$colDate TEXT, $colInputText TEXT, $colSoftDelete INTEGER)');
 
     await db.execute(
         'CREATE TABLE $frequencyTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTimeType TEXT, '
