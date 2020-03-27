@@ -73,6 +73,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   Column newColumn() {
     _decoration = _getDecorator();
     return new Column(children: <Widget>[
+      //TODO: put name here
       Text("Entries"),
       Expanded(
         child: getEntryList(),
@@ -113,12 +114,11 @@ class DyanmicList extends State<MyStrenghtsList> {
                       _myEntryBloc.updateEntry(entry);
                       _showSnackBar(context, entry);
                     } else if (direction == DismissDirection.startToEnd) {
-                      //TODO: How do I now edit this entry?\
                       _ectrl =
                           new TextEditingController(text: entry.description);
                       String editedText = await showDialog(
                           context: context,
-                          builder: (context) => ExitConfirmationDialog(_ectrl));
+                          builder: (context) => EditEntryDialog(_ectrl));
                       if (editedText != null) {
                         entry.description = editedText;
                         _myEntryBloc.updateEntry(entry);

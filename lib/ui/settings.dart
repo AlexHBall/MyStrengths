@@ -65,8 +65,11 @@ class SettingsState extends State<Settings> {
         visible: isSwitched,
         child: FloatingActionButton.extended(
           onPressed: () async {
-            final Frequency result = await dialog.frequencyDialog(context);
+            Frequency result = await showDialog(
+                context: context, builder: (context) => EnterFrequencyDialog());
+
             if (result != null) {
+              //TODO: Check frequency hasn't been added before
               _frequencyBloc.addFrequency(result);
             }
           },
@@ -122,8 +125,10 @@ class SettingsState extends State<Settings> {
                 return new GestureDetector(
                     onLongPress: () async {
                       final delete = await myDialogs.deleteDialog(context);
-                      if (delete) {
-                        _frequencyBloc.deleteFrequency(frequency.id);
+                      if (delete != null) {
+                        if (delete == true) {
+                          _frequencyBloc.deleteFrequency(frequency.id);
+                        }
                       }
                     },
                     child: FrequencyCard(frequency.getNotificationString()));
