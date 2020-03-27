@@ -24,6 +24,10 @@ class Entry {
     this._date = date;
   }
 
+  set description(String description){
+    this._description =description;
+  }
+
   set softDelete(int deleted) {
     if (deleted == 0 || deleted == 1) {
       this._softDelete = deleted;

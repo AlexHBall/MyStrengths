@@ -30,3 +30,25 @@ class NotificationIcon extends StatelessWidget {
     );
   }
 }
+
+class EditIcon extends StatelessWidget{
+  EditIcon();
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.edit),
+      iconSize: 35,
+      onPressed: null,);
+  }
+}
+
+class DeleteIcon extends StatelessWidget{
+  DeleteIcon();
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.delete),
+      iconSize: 35,
+      onPressed: null,);
+  }
+}

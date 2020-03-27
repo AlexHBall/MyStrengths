@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_strengths/ui/custom/box_decoration.dart';
+import 'package:my_strengths/ui/custom/icons.dart';
+
 
 class LoadingContainer extends StatelessWidget {
   LoadingContainer();
@@ -37,21 +39,32 @@ class DeleteContainer extends StatelessWidget {
   DeleteContainer();
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Center(
-            child: Text(
-              'Delete',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+          DeleteIcon(),
           SizedBox(width: 30.0),
         ],
       ),
       color: Colors.red,
+    );
+  }
+}
+
+class EditContainer extends StatelessWidget {
+  EditContainer();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(width: 30.0),
+          EditIcon(),
+        ],
+      ),
+      color: Colors.green,
     );
   }
 }
@@ -62,7 +75,6 @@ class StrengthInputContainer extends StatelessWidget {
   final TextEditingController eCtrl = new TextEditingController();
   final InputDecoration decoration;
   StrengthInputContainer(this.onSubmitted, this.decoration);
-  // StrengthInputContainer(this.onSubmitted);
 
   @override
   Widget build(BuildContext context) {

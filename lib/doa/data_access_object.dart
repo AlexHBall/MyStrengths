@@ -78,9 +78,6 @@ class MyStrengthsDao {
 
   List<Entry> _getEntriesList(var entryMapList) {
     List<Entry> entryList = List<Entry>();
-    List<Entry> visibleEntries = List<Entry>();
-
-    List<int> removeIndex = List<int>();
     for (int i = 0; i < entryMapList.length; i++) {
       entryList.add(Entry.fromMapObject(entryMapList[i]));
     }

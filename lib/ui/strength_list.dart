@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_strengths/ui/custom/dialogs.dart';
 import 'package:my_strengths/utils/custom_notification_creator.dart';
 import 'package:my_strengths/models/models.dart';
 import 'package:my_strengths/ui/app_bar.dart';
@@ -22,17 +23,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   EntryBloc _myEntryBloc;
   CustomNotificationCreator notificationCreator;
   InputDecoration _decoration;
-  int idJustDeleted;
-
-  final _snackBar = SnackBar(
-    content: Text('Undo Deletion!'),
-    action: SnackBarAction(
-      label: 'Undo',
-      onPressed: () {
-        return true;
-      },
-    ),
-  );
+  TextEditingController _ectrl;
 
   InputDecoration _getDecorator() {
     return InputDecoration(
@@ -40,9 +31,9 @@ class DyanmicList extends State<MyStrenghtsList> {
         hintStyle: Theme.of(context).textTheme.body2);
   }
 
-  void showSnackBar(BuildContext context, Entry entry) {
+  void _showSnackBar(BuildContext context, Entry entry) {
     SnackBar snackBar = SnackBar(
-      content: Text('Deleted '),
+      content: Text('Entry Deleted'),
       action: SnackBarAction(
         label: "UNDO",
         onPressed: () {
@@ -81,18 +72,14 @@ class DyanmicList extends State<MyStrenghtsList> {
 
   Column newColumn() {
     _decoration = _getDecorator();
-
-    return new Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("Entries"),
-          Expanded(
-            child: getEntryList(),
-          ),
-          StrengthInputContainer(_handleNewEntry, _decoration),
-          // StrengthInputContainer(_handleNewEntry),
-          SizedBox(height: 25.0),
-        ]);
+    return new Column(children: <Widget>[
+      Text("Entries"),
+      Expanded(
+        child: getEntryList(),
+      ),
+      StrengthInputContainer(_handleNewEntry, _decoration),
+      SizedBox(height: 25.0),
+    ]);
   }
 
   @override
@@ -124,17 +111,25 @@ class DyanmicList extends State<MyStrenghtsList> {
                     if (direction == DismissDirection.endToStart) {
                       entry.softDelete = 1;
                       _myEntryBloc.updateEntry(entry);
-                      showSnackBar(context, entry);
-                    } else {
-                      //TODO: implement a way to swipe and edit
-                      debugPrint("I want to edit the entry");
+                      _showSnackBar(context, entry);
+                    } else if (direction == DismissDirection.startToEnd) {
+                      //TODO: How do I now edit this entry?\
+                      _ectrl =
+                          new TextEditingController(text: entry.description);
+                      String editedText = await showDialog(
+                          context: context,
+                          builder: (context) => ExitConfirmationDialog(_ectrl));
+                      if (editedText != null) {
+                        entry.description = editedText;
+                        _myEntryBloc.updateEntry(entry);
+                      }
+                      _myEntryBloc.getEntries(_formattedDate);
                     }
                   },
+                  background: EditContainer(),
                   secondaryBackground: DeleteContainer(),
-                  background: Container(),
                   child: EntryCard(entry.description),
                   key: UniqueKey(),
-                  direction: DismissDirection.endToStart,
                 );
               },
             )
