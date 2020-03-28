@@ -69,6 +69,7 @@ class SettingsState extends State<Settings> {
 
             if (result != null) {
               //TODO: #2 Check frequency hasn't been added before
+              //IF yes display snackbar?
               _frequencyBloc.addFrequency(result);
             }
           },
