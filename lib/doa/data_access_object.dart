@@ -29,8 +29,7 @@ class MyStrengthsDao {
   Future<List<DateTime>> getUniqueDates() async {
     final db = await dbProvider.database;
     var result = await db.rawQuery(
-        "SELECT DISTINCT $colDate FROM $entryTable ORDER BY $colDate;");
-    //TODO: # 4 WHERE SOFTDELETE =0
+        "SELECT DISTINCT $colDate FROM $entryTable WHERE $colSoftDelete = 0 ORDER BY $colDate;");
     var entries = _getEntriesList(result);
     return _getDatesFromEntries(entries);
   }
@@ -123,4 +122,5 @@ class MyStrengthsDao {
     var result = await db.query(frequencyTable);
     return result;
   }
+
 }

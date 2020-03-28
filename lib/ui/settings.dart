@@ -120,24 +120,22 @@ class SettingsState extends State<Settings> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, itemPosition) {
                 Frequency frequency = snapshot.data[itemPosition];
-                //TODO: #1 replace gesture detor with swipable like entries
                 return Dismissible(
                   onDismissed: (DismissDirection direction) async {
                     if (direction == DismissDirection.endToStart) {
-                      //DELETE
+                      //TODO: Make this soft delete?
                       await _frequencyBloc.deleteFrequency(frequency.id);
                     } else if (direction == DismissDirection.startToEnd) {
-                      //EDIT
                       TextEditingController eCtrl = new TextEditingController(
                           text: frequency.duration.toString());
                       Frequency newFrequency = await showDialog(
                           context: context,
                           builder: (context) => EnterFrequencyDialog(eCtrl));
-
+                      debugPrint("$newFrequency");
                       if (newFrequency != null) {
                         //TODO: #2 Check frequency hasn't been added before
-                        frequency = newFrequency;
-                        _frequencyBloc.editFrequency(frequency);
+                        frequency.duration =newFrequency.duration;
+                        _frequencyBloc.updateFrequency(frequency);
                       }
                     }
                     _frequencyBloc.getFrequencies();

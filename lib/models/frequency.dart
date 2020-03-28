@@ -5,7 +5,7 @@ class Frequency {
 
   int get id => _id;
   int get duration => _duration;
-  
+
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
     if (_id != null) {
@@ -18,6 +18,10 @@ class Frequency {
   Frequency.fromMapObject(Map<String, dynamic> map) {
     this._id = map['id'];
     this._duration = map['duration'];
+  }
+
+  set duration(int duration) {
+    this._duration = duration;
   }
 
   @override

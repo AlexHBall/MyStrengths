@@ -32,7 +32,14 @@ class FrequencyBloc {
     getFrequencies();
   }
 
+  updateFrequency(Frequency frequency) async {
+    await _frequencyRepository.updateFrequency(frequency);
+    getFrequencies();
+  }
+
+
   dispose() {
     _frequencyController.close();
   }
+
 }
