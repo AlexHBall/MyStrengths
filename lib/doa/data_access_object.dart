@@ -30,7 +30,7 @@ class MyStrengthsDao {
     final db = await dbProvider.database;
     var result = await db.rawQuery(
         "SELECT DISTINCT $colDate FROM $entryTable ORDER BY $colDate;");
-
+    //TODO: # 4 WHERE SOFTDELETE =0
     var entries = _getEntriesList(result);
     return _getDatesFromEntries(entries);
   }

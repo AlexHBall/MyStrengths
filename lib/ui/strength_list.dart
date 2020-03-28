@@ -73,7 +73,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   Column newColumn() {
     _decoration = _getDecorator();
     return new Column(children: <Widget>[
-      //TODO: put name here
+      //TODO: #3 put name here
       Text("Entries"),
       Expanded(
         child: getEntryList(),

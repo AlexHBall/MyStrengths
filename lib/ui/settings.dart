@@ -20,7 +20,6 @@ class SettingsState extends State<Settings> {
   bool isSwitched;
   String name;
   FrequencyBloc _frequencyBloc;
-  Dialogs myDialogs = new Dialogs();
   static const namePreferenceKey = 'name';
   static const enabledPreferenceKey = 'enabled';
   SharedPreferences prefs;
@@ -40,8 +39,6 @@ class SettingsState extends State<Settings> {
 
   @override
   build(BuildContext context) {
-    Dialogs dialog = new Dialogs();
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
@@ -66,10 +63,12 @@ class SettingsState extends State<Settings> {
         child: FloatingActionButton.extended(
           onPressed: () async {
             Frequency result = await showDialog(
-                context: context, builder: (context) => EnterFrequencyDialog());
+                context: context,
+                builder: (context) =>
+                    EnterFrequencyDialog(new TextEditingController()));
 
             if (result != null) {
-              //TODO: Check frequency hasn't been added before
+              //TODO: #2 Check frequency hasn't been added before
               _frequencyBloc.addFrequency(result);
             }
           },
@@ -121,18 +120,35 @@ class SettingsState extends State<Settings> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, itemPosition) {
                 Frequency frequency = snapshot.data[itemPosition];
-//TODO: replace gesture detor with swipable like entries
-                return new GestureDetector(
-                    onLongPress: () async {
-                      final delete = await myDialogs.deleteDialog(context);
-                      if (delete != null) {
-                        if (delete == true) {
-                          _frequencyBloc.deleteFrequency(frequency.id);
-                        }
+                //TODO: #1 replace gesture detor with swipable like entries
+                return Dismissible(
+                  onDismissed: (DismissDirection direction) async {
+                    if (direction == DismissDirection.endToStart) {
+                      //DELETE
+                      await _frequencyBloc.deleteFrequency(frequency.id);
+                    } else if (direction == DismissDirection.startToEnd) {
+                      //EDIT
+                      TextEditingController eCtrl = new TextEditingController(
+                          text: frequency.duration.toString());
+                      Frequency newFrequency = await showDialog(
+                          context: context,
+                          builder: (context) => EnterFrequencyDialog(eCtrl));
+
+                      if (newFrequency != null) {
+                        //TODO: #2 Check frequency hasn't been added before
+                        frequency = newFrequency;
+                        _frequencyBloc.editFrequency(frequency);
                       }
-                    },
-                    child: FrequencyCard(frequency.getNotificationString()));
-              })
+                    }
+                    _frequencyBloc.getFrequencies();
+                  },
+                  background: EditContainer(),
+                  secondaryBackground: DeleteContainer(),
+                  child: FrequencyCard(frequency.getNotificationString()),
+                  key: UniqueKey(), // _myEntryBloc.getEntries(_formattedDate
+                );
+              },
+            )
           : Container(child: Center(child: NoFrequencies()));
     } else {
       return Center(

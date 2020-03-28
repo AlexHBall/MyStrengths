@@ -1,58 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_strengths/ui/custom/box_decoration.dart';
 import '../../models/frequency.dart';
-
-class Dialogs {
-  deleteDialog(BuildContext context) {
-    //TODO: Delete this once frequencies are dismissables
-    return showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return Dialog(
-              child: FractionallySizedBox(
-            widthFactor: 0.7,
-            heightFactor: 0.2,
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  new Expanded(
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        new Text(
-                          'Delete notifcation?',
-                          style: TextStyle(color: Colors.black),
-                        )
-                      ],
-                    ),
-                  ),
-                  new Expanded(
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        new FlatButton(
-                            onPressed: () {
-                              Navigator.pop(context, true);
-                            },
-                            child: new Text('Yes')),
-                        new FlatButton(
-                          onPressed: () {
-                            Navigator.pop(context, false);
-                          },
-                          child: new Text('No'),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ));
-        });
-  }
-}
 
 class EditEntryDialog extends StatelessWidget {
   final TextEditingController eCtrl;
@@ -103,6 +51,7 @@ class EditEntryDialog extends StatelessWidget {
                         autofocus: true,
                         controller: eCtrl,
                         style: Theme.of(context).textTheme.body2,
+                        //TODO: Make this text bigger
                         onSubmitted: (String text) {
                           Navigator.pop(context, text);
                         }),
@@ -116,8 +65,8 @@ class EditEntryDialog extends StatelessWidget {
 }
 
 class EnterFrequencyDialog extends StatelessWidget {
-  final TextEditingController eCtrl = new TextEditingController();
-  EnterFrequencyDialog();
+  final TextEditingController eCtrl;
+  EnterFrequencyDialog(this.eCtrl);
 
   @override
   Widget build(BuildContext context) {
@@ -157,8 +106,6 @@ class EnterFrequencyDialog extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
-                // child: Row(
-                //   children: <Widget>[
                 child: TextField(
                   style: Theme.of(context).textTheme.body2,
                   autofocus: true,
@@ -171,8 +118,6 @@ class EnterFrequencyDialog extends StatelessWidget {
                         borderSide: BorderSide(color: Colors.blue)),
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue)),
-                    // hintText: "Days",
-                    // hintStyle: Theme.of(context).textTheme.body2,
                   ),
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.number,
@@ -180,16 +125,6 @@ class EnterFrequencyDialog extends StatelessWidget {
                     WhitelistingTextInputFormatter.digitsOnly,
                   ],
                 ),
-                // FlatButton(
-                //     onPressed: () {
-                //       sumbitFrequency(context, eCtrl.text.toString());
-                //     },
-                //     child: Text(
-                //       'Day(s)',
-                //       style: Theme.of(context).textTheme.body2,
-                //     )),
-                //   ],
-                // ),
               ),
               Text("Days")
             ],
@@ -210,21 +145,4 @@ class EnterFrequencyDialog extends StatelessWidget {
       Navigator.pop(context, frequency);
     }
   }
-
-  // new Expanded(
-  //   child: new Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: <Widget>[
-  //       new FlatButton(
-  //           onPressed: () {
-  //             int duration = int.parse(eCtrl.text.toString());
-  //             if (duration > 0) {
-  //               Frequency frequency = new Frequency(duration);
-  //               Navigator.pop(context, frequency);
-  //             }
-  //           },
-  //           child: new Text('Day(s)')),
-  // ],
-  // ),
-  // )
 }
