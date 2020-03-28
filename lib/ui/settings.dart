@@ -25,8 +25,10 @@ class SettingsState extends State<Settings> {
   SharedPreferences prefs;
   String oldName;
   TextEditingController eCtrl;
+  GlobalKey<ScaffoldState> scaffoldState;
 
   InputDecoration decoration;
+
 
   @override
   void initState() {
@@ -34,12 +36,52 @@ class SettingsState extends State<Settings> {
     isSwitched = widget.isSwitched;
     oldName = widget.name;
     eCtrl = new TextEditingController(text: oldName);
+    scaffoldState = GlobalKey();
     super.initState();
+  }
+
+  void _showSnackBar(BuildContext context, String displayMessage) {
+    SnackBar snackBar = SnackBar(
+      content: Text(displayMessage),
+    );
+    scaffoldState.currentState.showSnackBar(snackBar);
+  }
+
+  void _handleNameChange(String newName) async {
+    if (prefs == null) {
+      prefs = await SharedPreferences.getInstance();
+    }
+    prefs.setString(namePreferenceKey, newName);
+    eCtrl = new TextEditingController(text: newName);
+  }
+
+  void _handleSwitchChange(bool newValue) {
+    setState(() {
+      isSwitched = newValue;
+    });
+    _showNotifications(newValue);
+  }
+
+  void _showNotifications(bool updatedSwitch) async {
+    if (prefs == null) {
+      prefs = await SharedPreferences.getInstance();
+    }
+    prefs.setBool(enabledPreferenceKey, updatedSwitch);
+  }
+
+  Future<bool> _isDurationUnique(int duration) async {
+    List<Frequency> list = await _frequencyBloc.getFrequenciesNow();
+    var durationList = list.where((element) => element.duration == duration);
+    if (durationList.isNotEmpty) {
+      return true;
+    }
+    return false;
   }
 
   @override
   build(BuildContext context) {
     return Scaffold(
+      key: scaffoldState,
       appBar: AppBar(
         title: Text("Settings"),
       ),
@@ -68,9 +110,13 @@ class SettingsState extends State<Settings> {
                     EnterFrequencyDialog(new TextEditingController()));
 
             if (result != null) {
+              bool addedBefore = await _isDurationUnique(result.duration);
+              if (addedBefore) {
+                _showSnackBar(context, "This reminder already exists");
+              } else {
+                _frequencyBloc.addFrequency(result);
+              }
               //TODO: #2 Check frequency hasn't been added before
-              //IF yes display snackbar?
-              _frequencyBloc.addFrequency(result);
             }
           },
           label: Text('Add new notification'),
@@ -80,29 +126,6 @@ class SettingsState extends State<Settings> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  void _handleNameChange(String newName) async {
-    if (prefs == null) {
-      prefs = await SharedPreferences.getInstance();
-    }
-    prefs.setString(namePreferenceKey, newName);
-    eCtrl = new TextEditingController(text: newName);
-  }
-
-  void _handleSwitchChange(bool newValue) {
-    setState(() {
-      isSwitched = newValue;
-    });
-    _showNotifications(newValue);
-  }
-
-  void _showNotifications(bool updatedSwitch) async {
-    if (prefs == null) {
-      prefs = await SharedPreferences.getInstance();
-    }
-    prefs.setBool(enabledPreferenceKey, updatedSwitch);
-    //Works as intended
   }
 
   getFrequencyList() {
@@ -124,7 +147,6 @@ class SettingsState extends State<Settings> {
                 return Dismissible(
                   onDismissed: (DismissDirection direction) async {
                     if (direction == DismissDirection.endToStart) {
-                      //TODO: Make this soft delete?
                       await _frequencyBloc.deleteFrequency(frequency.id);
                     } else if (direction == DismissDirection.startToEnd) {
                       TextEditingController eCtrl = new TextEditingController(
@@ -132,11 +154,17 @@ class SettingsState extends State<Settings> {
                       Frequency newFrequency = await showDialog(
                           context: context,
                           builder: (context) => EnterFrequencyDialog(eCtrl));
-                      debugPrint("$newFrequency");
                       if (newFrequency != null) {
                         //TODO: #2 Check frequency hasn't been added before
-                        frequency.duration =newFrequency.duration;
-                        _frequencyBloc.updateFrequency(frequency);
+                        bool addedBefore =
+                            await _isDurationUnique(newFrequency.duration);
+                        if (addedBefore) {
+                          _showSnackBar(context,
+                              "This reminder already exists, reminder not updated");
+                        } else {
+                          frequency.duration = newFrequency.duration;
+                          _frequencyBloc.updateFrequency(frequency);
+                        }
                       }
                     }
                     _frequencyBloc.getFrequencies();
