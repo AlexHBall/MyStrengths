@@ -116,7 +116,6 @@ class SettingsState extends State<Settings> {
               } else {
                 _frequencyBloc.addFrequency(result);
               }
-              //TODO: #2 Check frequency hasn't been added before
             }
           },
           label: Text('Add new notification'),
@@ -155,7 +154,6 @@ class SettingsState extends State<Settings> {
                           context: context,
                           builder: (context) => EnterFrequencyDialog(eCtrl));
                       if (newFrequency != null) {
-                        //TODO: #2 Check frequency hasn't been added before
                         bool addedBefore =
                             await _isDurationUnique(newFrequency.duration);
                         if (addedBefore) {
