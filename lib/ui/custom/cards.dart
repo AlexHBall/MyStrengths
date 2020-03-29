@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_strengths/ui/custom/custom_ui.dart';
 import 'icons.dart';
 
 class BaseCard extends StatelessWidget {
@@ -47,7 +48,7 @@ class EntryCard extends StatelessWidget {
             new Expanded(
                 child: Padding(
               padding: EdgeInsets.only(left: 10, right: 30),
-              child: new Text(text, style: Theme.of(context).textTheme.body1),
+              child: Body1Text(text),
             )),
           ],
         ));
@@ -100,25 +101,28 @@ class NotificationEnabledCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Switch notificationEnabled = Switch(
+      value: isSwitched,
+      onChanged: onSwitched,
+      activeTrackColor: Colors.white,
+      activeColor: Colors.grey,
+    );
+
+    List<Widget> enabledRow = [
+      Body2Text('Enable entry reminder notifications'),
+      notificationEnabled
+    ];
+
+    List<Widget> earliestRow = [Body2Text("Earliest Reminder")];
+    List<Widget> latestRow = [Body2Text("Latest Reminder")];
+
     Container child = Container(
       child: Column(
         children: <Widget>[
           Text("Notifications"),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'Enable entry reminder notifications',
-                style: Theme.of(context).textTheme.body2,
-              ),
-              Switch(
-                value: isSwitched,
-                onChanged: onSwitched,
-                activeTrackColor: Colors.white,
-                activeColor: Colors.grey,
-              ),
-            ],
-          )
+          LeftTextRow(enabledRow),
+          LeftTextVisiblityRow(isSwitched, earliestRow),
+          LeftTextVisiblityRow(isSwitched, latestRow),
         ],
       ),
     );
@@ -140,7 +144,7 @@ class FrequencyCard extends StatelessWidget {
             new Expanded(
                 child: Padding(
               padding: EdgeInsets.only(left: 10, right: 30),
-              child: new Text(text, style: Theme.of(context).textTheme.body1),
+              child: Body1Text(text),
             )),
           ],
         ));

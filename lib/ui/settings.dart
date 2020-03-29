@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_strengths/ui/custom/cards.dart';
+import 'package:my_strengths/ui/custom/custom_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'custom/dialogs.dart';
 import '../models/frequency.dart';
 import 'package:my_strengths/bloc/frequency_bloc.dart';
-import 'package:my_strengths/ui/custom/containers.dart';
 
 class Settings extends StatefulWidget {
   final bool isSwitched;
