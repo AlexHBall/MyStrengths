@@ -122,7 +122,7 @@ class SettingsState extends State<Settings> {
           },
           label: Text('Add new notification'),
           icon: Icon(Icons.add_alarm),
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.blue,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
