@@ -27,3 +27,17 @@ class Body1Text extends StatelessWidget {
     );
   }
 }
+
+/// Builds a textbox with text theme body 1 style
+class Display1Text extends StatelessWidget {
+  final String text;
+  Display1Text(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.display1,
+    );
+  }
+}

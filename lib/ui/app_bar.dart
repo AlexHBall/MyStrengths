@@ -6,16 +6,19 @@ import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'settings.dart';
 
+
 class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   final Function(DateTime) onDateSelected;
   final String date;
+  final String enabledPreferenceKey = 'enabled';
+  final String namePreferenceKey = 'name';
+
   MyAppBar(this.date, this.onDateSelected);
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
   Future<bool> _getVisible(SharedPreferences prefs) async {
-    const enabledPreferenceKey = 'enabled';
     bool switched = prefs.getBool(enabledPreferenceKey);
     if (switched != null) {
       return switched;
@@ -23,9 +26,12 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
     return false;
   }
 
-  Future<String> _getName(SharedPreferences prefs) async {
-    const namePreferenceKey = 'name';
-    return prefs.getString(namePreferenceKey);
+  Future<String> _getStringPref(SharedPreferences prefs, String key) async {
+    String pref = prefs.getString(key);
+    if (pref != null) {
+      return pref;
+    }
+    return "";
   }
 
   @override
@@ -60,7 +66,7 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
           onPressed: () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             bool switched = await _getVisible(prefs);
-            String name = await _getName(prefs);
+            String name = await _getStringPref(prefs, namePreferenceKey);
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return Settings(switched, name);
             }));

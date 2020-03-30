@@ -23,7 +23,7 @@ class BaseSettingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: Colors.blueGrey,
+        color: Colors.blue,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 5,
         child: child);
@@ -68,7 +68,7 @@ class NameCard extends StatelessWidget {
     Container child = Container(
         child: new Column(
       children: <Widget>[
-        Text("Name"),
+        Display1Text("Name"),
         TextFormField(
           decoration: InputDecoration(
             border: new OutlineInputBorder(
@@ -97,7 +97,8 @@ class NotificationEnabledCard extends StatelessWidget {
   final bool isSwitched;
   final Function(bool) onSwitched;
 
-  NotificationEnabledCard(this.onSwitched, this.isSwitched);
+  NotificationEnabledCard(
+      this.onSwitched, this.isSwitched);
 
   @override
   Widget build(BuildContext context) {
@@ -109,20 +110,15 @@ class NotificationEnabledCard extends StatelessWidget {
     );
 
     List<Widget> enabledRow = [
-      Body2Text('Enable entry reminder notifications'),
+      Body1Text('Enable entry reminder notifications'),
       notificationEnabled
     ];
-
-    List<Widget> earliestRow = [Body2Text("Earliest Reminder")];
-    List<Widget> latestRow = [Body2Text("Latest Reminder")];
 
     Container child = Container(
       child: Column(
         children: <Widget>[
-          Text("Notifications"),
-          LeftTextRow(enabledRow),
-          LeftTextVisiblityRow(isSwitched, earliestRow),
-          LeftTextVisiblityRow(isSwitched, latestRow),
+          Display1Text("Notifications"),
+          EvenlySpacedRow(enabledRow),
         ],
       ),
     );

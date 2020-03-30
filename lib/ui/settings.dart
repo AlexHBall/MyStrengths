@@ -7,7 +7,10 @@ import 'package:my_strengths/bloc/frequency_bloc.dart';
 class Settings extends StatefulWidget {
   final bool isSwitched;
   final String name;
-  Settings(this.isSwitched, this.name);
+  Settings(
+    this.isSwitched,
+    this.name,
+  );
   @override
   State<StatefulWidget> createState() {
     return SettingsState();
@@ -27,7 +30,6 @@ class SettingsState extends State<Settings> {
 
   InputDecoration decoration;
 
-
   @override
   void initState() {
     _frequencyBloc = new FrequencyBloc();
@@ -38,7 +40,7 @@ class SettingsState extends State<Settings> {
     super.initState();
   }
 
-  void _showSnackBar(BuildContext context, String displayMessage) {
+  void _showSnackBar(String displayMessage) {
     SnackBar snackBar = SnackBar(
       content: Text(displayMessage),
     );
@@ -86,10 +88,12 @@ class SettingsState extends State<Settings> {
       body: Column(
         children: <Widget>[
           NameCard(_handleNameChange, oldName, eCtrl),
-          SizedBox(height: 5.0),
+          SizedBox(
+            height: 5.0,
+          ),
           NotificationEnabledCard(_handleSwitchChange, isSwitched),
           SizedBox(
-            height: 20,
+            height: 5.0,
           ),
           Visibility(
               visible: isSwitched,
@@ -110,7 +114,7 @@ class SettingsState extends State<Settings> {
             if (result != null) {
               bool addedBefore = await _isDurationUnique(result.duration);
               if (addedBefore) {
-                _showSnackBar(context, "This reminder already exists");
+                _showSnackBar("This reminder already exists");
               } else {
                 _frequencyBloc.addFrequency(result);
               }
@@ -155,7 +159,7 @@ class SettingsState extends State<Settings> {
                         bool addedBefore =
                             await _isDurationUnique(newFrequency.duration);
                         if (addedBefore) {
-                          _showSnackBar(context,
+                          _showSnackBar(
                               "This reminder already exists, reminder not updated");
                         } else {
                           frequency.duration = newFrequency.duration;

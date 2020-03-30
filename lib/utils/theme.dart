@@ -19,8 +19,8 @@ ThemeData basicTheme() {
             fontWeight: FontWeight.bold),
         display1: base.headline.copyWith(
           fontFamily: fontFamily,
-          fontSize: 28.0,
-          color: Colors.white70,
+          fontSize: 26.0,
+          color: Colors.white,
         ),
         display2: base.headline.copyWith(
           fontFamily: fontFamily,

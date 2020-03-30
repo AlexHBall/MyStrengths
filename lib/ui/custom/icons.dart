@@ -9,7 +9,7 @@ class InputIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.insert_emoticon),
-      iconSize: 35,
+      iconSize: 30,
       // color: Colors.white,
       onPressed: handlePress,
     );
@@ -17,38 +17,40 @@ class InputIcon extends StatelessWidget {
 }
 
 class NotificationIcon extends StatelessWidget {
-
   NotificationIcon();
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.alarm),
-      iconSize: 35,
-      color: Colors.white, //TODO: Why isn't this white?
+      icon: Icon(
+        Icons.alarm, color: Colors.white,
+      ),
+      iconSize: 30,
       onPressed: null,
     );
   }
 }
 
-class EditIcon extends StatelessWidget{
+class EditIcon extends StatelessWidget {
   EditIcon();
   @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.edit),
       iconSize: 35,
-      onPressed: null,);
+      onPressed: null,
+    );
   }
 }
 
-class DeleteIcon extends StatelessWidget{
+class DeleteIcon extends StatelessWidget {
   DeleteIcon();
   @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.delete),
       iconSize: 35,
-      onPressed: null,);
+      onPressed: null,
+    );
   }
 }
