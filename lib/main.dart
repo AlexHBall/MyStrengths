@@ -11,7 +11,7 @@ class MyStrengths extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: basicTheme(),
-      // debugShowCheckedModeBanner: false  ,
+      debugShowCheckedModeBanner: false  ,
       home: MyStrenghtsList(),
     );
   }
