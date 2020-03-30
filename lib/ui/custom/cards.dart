@@ -35,7 +35,7 @@ class EntryCard extends StatelessWidget {
   final text;
   void _handleOnPressed() async {
     print("YUMMY YUMMY");
-    //TODO: Make it display the input text?
+    //TODO1: Make it display the input text?
   }
 
   @override
@@ -69,21 +69,32 @@ class NameCard extends StatelessWidget {
         child: new Column(
       children: <Widget>[
         Display1Text("Name"),
-        TextFormField(
-          decoration: InputDecoration(
-            border: new OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-              borderRadius: const BorderRadius.all(
-                const Radius.circular(10.0),
+        // StrengthInputContainer(onNewNameEntered,InputDecoration()),
+        Padding(
+          padding: EdgeInsets.only(left: 10,right: 10),
+          child: TextFormField(
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(10.0),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(10.0),
+                ),
               ),
             ),
+            controller: eCtrl,
+            style: Theme.of(context).textTheme.body2,
+            onFieldSubmitted: (String value) {
+              onNewNameEntered(value);
+            },
           ),
-          controller: eCtrl,
-          style: Theme.of(context).textTheme.body2,
-          onFieldSubmitted: (String value) {
-            onNewNameEntered(value);
-          },
         ),
+
         SizedBox(
           height: 5.0,
         )
@@ -97,8 +108,7 @@ class NotificationEnabledCard extends StatelessWidget {
   final bool isSwitched;
   final Function(bool) onSwitched;
 
-  NotificationEnabledCard(
-      this.onSwitched, this.isSwitched);
+  NotificationEnabledCard(this.onSwitched, this.isSwitched);
 
   @override
   Widget build(BuildContext context) {

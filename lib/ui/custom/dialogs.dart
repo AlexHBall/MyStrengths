@@ -50,8 +50,7 @@ class EditEntryDialog extends StatelessWidget {
                     child: TextField(
                         autofocus: true,
                         controller: eCtrl,
-                        style: Theme.of(context).textTheme.body2,
-                        //TODO: Make this text bigger
+                        style: Theme.of(context).textTheme.display1,
                         onSubmitted: (String text) {
                           Navigator.pop(context, text);
                         }),

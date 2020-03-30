@@ -77,7 +77,6 @@ class DyanmicList extends State<MyStrenghtsList> {
   Column newColumn() {
     _decoration = _getDecorator();
     return new Column(children: <Widget>[
-      //TODO: #3 put name here
       Text("Entries"),
       Expanded(
         child: getEntryList(),
@@ -111,7 +110,6 @@ class DyanmicList extends State<MyStrenghtsList> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, itemPosition) {
                 Entry entry = snapshot.data[itemPosition];
-                //TODO: Test does the first entry disappear if empty?
                 return Dismissible(
                   onDismissed: (DismissDirection direction) async {
                     if (direction == DismissDirection.endToStart) {
