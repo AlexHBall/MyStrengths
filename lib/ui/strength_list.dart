@@ -64,8 +64,14 @@ class DyanmicList extends State<MyStrenghtsList> {
   void initState() {
     notificationCreator = CustomNotificationCreator();
     _formattedDate = daysFormat.format(DateTime.now());
-    _myEntryBloc = EntryBloc(_formattedDate);
     super.initState();
+  }
+
+@override
+  void didChangeDependencies() {
+    _myEntryBloc = EntryBloc(_formattedDate);
+    _myEntryBloc.getEntries(_formattedDate);
+    super.didChangeDependencies();
   }
 
   Column newColumn() {
@@ -105,6 +111,7 @@ class DyanmicList extends State<MyStrenghtsList> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, itemPosition) {
                 Entry entry = snapshot.data[itemPosition];
+                //TODO: Test does the first entry disappear if empty?
                 return Dismissible(
                   onDismissed: (DismissDirection direction) async {
                     if (direction == DismissDirection.endToStart) {
@@ -120,8 +127,8 @@ class DyanmicList extends State<MyStrenghtsList> {
                       if (editedText != null) {
                         entry.description = editedText;
                         _myEntryBloc.updateEntry(entry);
+                        _myEntryBloc.getEntries(_formattedDate);
                       }
-                      _myEntryBloc.getEntries(_formattedDate);
                     }
                   },
                   background: EditContainer(),
@@ -131,10 +138,8 @@ class DyanmicList extends State<MyStrenghtsList> {
                 );
               },
             )
-          : Container(
-              child: Center(
-              child: noTodoMessageWidget(),
-            ));
+          : Container(child: Center(child: NoEntries()));
+
     } else {
       return Center(
         child: loadingData(),
@@ -145,15 +150,6 @@ class DyanmicList extends State<MyStrenghtsList> {
   Widget loadingData() {
     _myEntryBloc.getEntries(_formattedDate);
     return LoadingContainer();
-  }
-
-  Widget noTodoMessageWidget() {
-    return Container(
-      child: Text(
-        "No entries yet",
-        style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
-      ),
-    );
   }
 
   dispose() {

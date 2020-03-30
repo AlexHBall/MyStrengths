@@ -107,7 +107,6 @@ Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
 }
 
 _getRandomTime(int maximum, int minimum) {
-  //TODO: #Later Make these hours configurable in the settings
   Random random = new Random();
   return random.nextInt(maximum) + minimum;
 }

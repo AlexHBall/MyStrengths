@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:my_strengths/ui/custom/box_decoration.dart';
 import 'package:my_strengths/ui/custom/icons.dart';
 
-
 class LoadingContainer extends StatelessWidget {
   LoadingContainer();
   @override
@@ -30,6 +29,18 @@ class NoFrequencies extends StatelessWidget {
     return Container(
       child: Text(
         "Add a new notification below!",
+      ),
+    );
+  }
+}
+
+class NoEntries extends StatelessWidget {
+  NoEntries();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text(
+        "Add a new entry below!",
       ),
     );
   }
