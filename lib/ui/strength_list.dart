@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_strengths/app_localisations.dart';
 import 'package:my_strengths/utils/custom_notification_creator.dart';
 import 'package:my_strengths/models/models.dart';
 import 'package:my_strengths/ui/app_bar.dart';
@@ -67,7 +68,7 @@ class DyanmicList extends State<MyStrenghtsList> {
     super.initState();
   }
 
-@override
+  @override
   void didChangeDependencies() {
     _myEntryBloc = EntryBloc(_formattedDate);
     _myEntryBloc.getEntries(_formattedDate);
@@ -77,7 +78,9 @@ class DyanmicList extends State<MyStrenghtsList> {
   Column newColumn() {
     _decoration = _getDecorator();
     return new Column(children: <Widget>[
-      Text("Entries"),
+      Text(
+        AppLocalizations.of(context).translate('first_string'),
+      ),
       Expanded(
         child: getEntryList(),
       ),
@@ -137,7 +140,6 @@ class DyanmicList extends State<MyStrenghtsList> {
               },
             )
           : Container(child: Center(child: NoEntries()));
-
     } else {
       return Center(
         child: loadingData(),
