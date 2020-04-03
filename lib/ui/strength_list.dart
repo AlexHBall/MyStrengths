@@ -25,7 +25,7 @@ class DyanmicList extends State<MyStrenghtsList> {
 
   InputDecoration _getDecorator() {
     return InputDecoration(
-        hintText: TextHelper.getPromptMessage(),
+        hintText: TextHelper.getPromptMessage(Localizations.localeOf(context)),
         hintStyle: Theme.of(context).textTheme.body2);
   }
 

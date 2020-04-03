@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_strengths/utils/app_localisations.dart';
 
 class EvenlySpacedRow extends StatelessWidget {
   final List<Widget> toDisplay;

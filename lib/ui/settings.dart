@@ -176,7 +176,8 @@ class SettingsState extends State<Settings> {
                   },
                   background: EditContainer(),
                   secondaryBackground: DeleteContainer(),
-                  child: FrequencyCard(frequency.getNotificationString()),
+                  child: FrequencyCard(frequency
+                      .getNotificationString(Localizations.localeOf(context))),
                   key: UniqueKey(), // _myEntryBloc.getEntries(_formattedDate
                 );
               },

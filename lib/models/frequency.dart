@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class Frequency {
   int _id;
   int _duration;
@@ -29,10 +31,19 @@ class Frequency {
     return "Frequency with ID [$_id] and duration [$_duration]";
   }
 
-  String getNotificationString() {
-    if (duration > 1) {
-      return "$_duration days";
+  String getNotificationString(Locale locale) {
+    if (locale.languageCode == "en") {
+      if (duration > 1) {
+        return "$_duration days";
+      }
+      return " $_duration day";
+    } else if (locale.languageCode == "fr") {
+      if (duration > 1) {
+        return "$_duration jours";
+      }
+      return " $_duration jour";
+    } else {
+      return "Language not implemented";
     }
-    return " $_duration day";
   }
 }
