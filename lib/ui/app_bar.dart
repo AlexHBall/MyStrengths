@@ -55,7 +55,7 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
 
               var date = await Navigator.push(context,
                   MaterialPageRoute(builder: (context) {
-                return CalendarScreen(eventList);
+                return CalendarScreen(eventList,Localizations.localeOf(context));
               }));
               if (date != null) {
                 onDateSelected(date);

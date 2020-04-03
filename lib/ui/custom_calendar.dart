@@ -4,17 +4,19 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:my_strengths/utils/utils.dart';
+import 'dart:ui';
 
 class CalendarScreen extends StatelessWidget {
   final EventList<Event> eventList;
-  CalendarScreen(this.eventList);
+  final Locale locale;
+  CalendarScreen(this.eventList,this.locale);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('select_date')),
       ),
-      body: CustomCalendar(eventList),
+      body: CustomCalendar(eventList,locale),
     );
   }
 }
@@ -22,7 +24,8 @@ class CalendarScreen extends StatelessWidget {
 class CustomCalendar extends StatelessWidget {
   //TODO: Change the locale
   final EventList<Event> eventList;
-  CustomCalendar(this.eventList);
+  final Locale locale;
+  CustomCalendar(this.eventList,this.locale);
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +62,7 @@ class CustomCalendar extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
         ),
+        locale: locale.languageCode,
         // markedDateShowIcon: true,
       ),
     );
