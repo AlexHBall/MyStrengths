@@ -1,3 +1,18 @@
 {
-    "first_string": "Bonjour! This is the first message."
+    "entries": "Bienvenue",
+    "loading_entries" : "Charger tes textes",
+    "add_new_entry": "Ecris ton texte en bas de la page",
+    "edit_entry" : "Modifier ton texte",
+    "deleted_entry" : "Texte supprimé",
+    "delete_undo" : "Annuler",
+    "select_date": "Selectionnes la date",
+    "name" : "Nom",
+    "notifications" : "Notifications",
+    "notification_enabled" : "Activer Notifications",
+    "add_notification" : "Ajouter une nouvelle notification",
+    "add_notification_reminder" : "Ajouter une nouvelle notification en dessous",
+    "notification_exists" : "Cette notification existe déjà",
+    "create_notification" : "Spécifier le nombre de jours",
+    "days_under" : "Jours",
+    "settings": "Paramètres"
 }

@@ -1,3 +1,18 @@
 {
-    "first_string": "Hello"
+    "entries": "Entries",
+    "loading_entries" : "Loading ...",
+    "add_new_entry": "Add a new entry below!",
+    "edit_entry" : "Edit your entry",
+    "deleted_entry" : "Entry Deleted",
+    "delete_undo" : "UNDO",
+    "select_date": "Select a date",
+    "name" : "Name",
+    "notifications" : "Notifications",
+    "notification_enabled" : "Receive Notifications  ",
+    "add_notification" : "Add a new notification",
+    "add_notification_reminder" : "Add a new notification below!",
+    "notification_exists" : "This reminder already exists",
+    "create_notification" : "Remind me after",
+    "days_under" : "Days",
+    "settings": "Settings"
 }
