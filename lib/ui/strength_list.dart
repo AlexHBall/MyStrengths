@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_strengths/app_localisations.dart';
 import 'package:my_strengths/utils/custom_notification_creator.dart';
 import 'package:my_strengths/models/models.dart';
 import 'package:my_strengths/ui/app_bar.dart';
 import 'custom/custom_ui.dart';
 import 'package:my_strengths/bloc/bloc.dart';
-import 'package:my_strengths/utils/text_helper.dart';
+import 'package:my_strengths/utils/utils.dart';
 
 DateFormat daysFormat = DateFormat("dd-MM-yyyy");
 
@@ -32,9 +31,9 @@ class DyanmicList extends State<MyStrenghtsList> {
 
   void _showSnackBar(BuildContext context, Entry entry) {
     SnackBar snackBar = SnackBar(
-      content: Text('Entry Deleted'),
+      content: Text(AppLocalizations.of(context).translate("deleted_entry")),
       action: SnackBarAction(
-        label: "UNDO",
+        label: AppLocalizations.of(context).translate("delete_undo"),
         onPressed: () {
           entry.softDelete = 0;
           _myEntryBloc.updateEntry(entry);
@@ -79,7 +78,7 @@ class DyanmicList extends State<MyStrenghtsList> {
     _decoration = _getDecorator();
     return new Column(children: <Widget>[
       Text(
-        AppLocalizations.of(context).translate('first_string'),
+        AppLocalizations.of(context).translate('entries'),
       ),
       Expanded(
         child: getEntryList(),

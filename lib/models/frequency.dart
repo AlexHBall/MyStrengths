@@ -31,8 +31,8 @@ class Frequency {
 
   String getNotificationString() {
     if (duration > 1) {
-      return "Entry Reminder in $_duration days";
+      return "$_duration days";
     }
-    return "Entry Reminder in $_duration day";
+    return " $_duration day";
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_strengths/ui/custom/box_decoration.dart';
 import 'package:my_strengths/ui/custom/icons.dart';
+import 'package:my_strengths/utils/utils.dart';
 
 class LoadingContainer extends StatelessWidget {
   LoadingContainer();
@@ -13,7 +14,7 @@ class LoadingContainer extends StatelessWidget {
           children: <Widget>[
             CircularProgressIndicator(),
             Text(
-              "Loading...",
+              AppLocalizations.of(context).translate("loading_entries"),
             )
           ],
         ),
@@ -28,8 +29,7 @@ class NoFrequencies extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        "Add a new notification below!",
-      ),
+          AppLocalizations.of(context).translate("add_notification_reminder")),
     );
   }
 }
@@ -40,7 +40,7 @@ class NoEntries extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        "Add a new entry below!",
+        AppLocalizations.of(context).translate('add_new_entry'),
       ),
     );
   }

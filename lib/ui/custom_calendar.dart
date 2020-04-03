@@ -3,6 +3,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel, WeekdayFormat;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
+import 'package:my_strengths/utils/utils.dart';
 
 class CalendarScreen extends StatelessWidget {
   final EventList<Event> eventList;
@@ -11,7 +12,7 @@ class CalendarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select a date"),
+        title: Text(AppLocalizations.of(context).translate('select_date')),
       ),
       body: CustomCalendar(eventList),
     );
@@ -19,8 +20,8 @@ class CalendarScreen extends StatelessWidget {
 }
 
 class CustomCalendar extends StatelessWidget {
+  //TODO: Change the locale
   final EventList<Event> eventList;
-
   CustomCalendar(this.eventList);
 
   @override

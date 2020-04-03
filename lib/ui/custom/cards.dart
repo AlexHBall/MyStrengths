@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_strengths/ui/custom/custom_ui.dart';
 import 'icons.dart';
+import 'package:my_strengths/utils/utils.dart';
 
 class BaseCard extends StatelessWidget {
   final Widget child;
@@ -31,8 +32,8 @@ class BaseSettingCard extends StatelessWidget {
 }
 
 class EntryCard extends StatelessWidget {
-  EntryCard(this.text);
-  final text;
+  EntryCard(this.entryText);
+  final String entryText;
   void _handleOnPressed() async {
     print("YUMMY YUMMY");
     //TODO1: Make it display the input text?
@@ -48,7 +49,7 @@ class EntryCard extends StatelessWidget {
             new Expanded(
                 child: Padding(
               padding: EdgeInsets.only(left: 10, right: 30),
-              child: Body1Text(text),
+              child: Body1Text(entryText),
             )),
           ],
         ));
@@ -68,10 +69,10 @@ class NameCard extends StatelessWidget {
     Container child = Container(
         child: new Column(
       children: <Widget>[
-        Display1Text("Name"),
+        Display1Text(AppLocalizations.of(context).translate('name')),
         // StrengthInputContainer(onNewNameEntered,InputDecoration()),
         Padding(
-          padding: EdgeInsets.only(left: 10,right: 10),
+          padding: EdgeInsets.only(left: 10, right: 10),
           child: TextFormField(
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
@@ -120,14 +121,14 @@ class NotificationEnabledCard extends StatelessWidget {
     );
 
     List<Widget> enabledRow = [
-      Body1Text('Enable entry reminder notifications'),
+      Body1Text(AppLocalizations.of(context).translate('notification_enabled')),
       notificationEnabled
     ];
 
     Container child = Container(
       child: Column(
         children: <Widget>[
-          Display1Text("Notifications"),
+          Display1Text(AppLocalizations.of(context).translate("notifications")),
           EvenlySpacedRow(enabledRow),
         ],
       ),
@@ -137,8 +138,8 @@ class NotificationEnabledCard extends StatelessWidget {
 }
 
 class FrequencyCard extends StatelessWidget {
-  final String text;
-  FrequencyCard(this.text);
+  final String frequencyText;
+  FrequencyCard(this.frequencyText);
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +151,7 @@ class FrequencyCard extends StatelessWidget {
             new Expanded(
                 child: Padding(
               padding: EdgeInsets.only(left: 10, right: 30),
-              child: Body1Text(text),
+              child: Body1Text(frequencyText),
             )),
           ],
         ));

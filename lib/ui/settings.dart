@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_strengths/ui/custom/custom_ui.dart';
+import 'package:my_strengths/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/frequency.dart';
 import 'package:my_strengths/bloc/frequency_bloc.dart';
@@ -80,10 +81,13 @@ class SettingsState extends State<Settings> {
 
   @override
   build(BuildContext context) {
+    String displayMessage =
+        AppLocalizations.of(context).translate("notification_exists");
+
     return Scaffold(
       key: scaffoldState,
       appBar: AppBar(
-        title: Text("Settings"),
+        title: Text(AppLocalizations.of(context).translate('settings')),
       ),
       body: Column(
         children: <Widget>[
@@ -114,13 +118,14 @@ class SettingsState extends State<Settings> {
             if (result != null) {
               bool addedBefore = await _isDurationUnique(result.duration);
               if (addedBefore) {
-                _showSnackBar("This reminder already exists");
+                _showSnackBar(displayMessage);
               } else {
                 _frequencyBloc.addFrequency(result);
               }
             }
           },
-          label: Text('Add new notification'),
+          label:
+              Text(AppLocalizations.of(context).translate('add_notification')),
           icon: Icon(Icons.add_alarm),
           backgroundColor: Colors.blue,
         ),
@@ -159,8 +164,8 @@ class SettingsState extends State<Settings> {
                         bool addedBefore =
                             await _isDurationUnique(newFrequency.duration);
                         if (addedBefore) {
-                          _showSnackBar(
-                              "This reminder already exists, reminder not updated");
+                          _showSnackBar(AppLocalizations.of(context)
+                              .translate("notification_exists"));
                         } else {
                           frequency.duration = newFrequency.duration;
                           _frequencyBloc.updateFrequency(frequency);
