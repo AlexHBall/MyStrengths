@@ -3,7 +3,6 @@ import 'package:my_strengths/ui/custom/custom_ui.dart';
 import 'package:my_strengths/doa/data_access_object.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
-import 'package:my_strengths/ui/strength_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_strengths/ui/settings.dart';
 

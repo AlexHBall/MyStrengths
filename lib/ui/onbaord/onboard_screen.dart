@@ -113,6 +113,12 @@ class Welcome extends StatelessWidget {
             AppLocalizations.of(context).translate('onboard_welcome_intro'),
           ),
         ),
+                Padding(
+          padding: EdgeInsets.all(25),
+          child: Text(
+            AppLocalizations.of(context).translate('onboard_welcome_intro2'),
+          ),
+        ),
       ],
     );
 
@@ -125,6 +131,10 @@ class SwipeExplain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _skipOnboard(SharedPreferences prefs) async {
+      prefs.setBool("welcome", true);
+    }
+
     Column explain = Column(
       children: <Widget>[
         SizedBox(
@@ -144,9 +154,15 @@ class SwipeExplain extends StatelessWidget {
               AppLocalizations.of(context).translate("onboard_example_entry")),
           key: UniqueKey(),
         ),
-
         FlatButton(
-          onPressed: null,
+          onPressed: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            _skipOnboard(prefs);
+            Navigator.pushNamedAndRemoveUntil(context, "/strengths",
+                (Route<dynamic> route) {
+              return false;
+            });
+          },
           child: Body1Text(
             AppLocalizations.of(context).translate('onbard_welcome_done'),
           ),
