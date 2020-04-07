@@ -99,9 +99,10 @@ class OnboardAppBar extends StatelessWidget with PreferredSizeWidget {
         onPressed: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           _skipOnboard(prefs);
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return MyStrenghtsList();
-          }));
+          Navigator.pushNamedAndRemoveUntil(context, "/strengths",
+              (Route<dynamic> route) {
+            return false;
+          });
         },
       ),
     ]);

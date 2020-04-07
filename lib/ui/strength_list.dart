@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_strengths/utils/custom_notification_creator.dart';
 import 'package:my_strengths/models/models.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'custom/custom_ui.dart';
 import 'package:my_strengths/bloc/bloc.dart';
 import 'package:my_strengths/utils/utils.dart';
@@ -111,6 +112,14 @@ class DyanmicList extends State<MyStrenghtsList> {
     return new Scaffold(
       appBar: MainAppBar(_formattedDate, _handleDateChange),
       body: listBody(),
+      //TODO: Remove this when onboarding done properly
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+SharedPreferences prefs = await SharedPreferences.getInstance();
+prefs.setBool("welcome", false);
+        print("weclome ${prefs.getBool("welcome")}");
+        },
+      ),
     );
   }
 

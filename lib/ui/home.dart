@@ -19,7 +19,8 @@ class Home extends StatelessWidget {
           default:
             if (!snapshot.hasError) {
               // @ToDo("Return a welcome screen");
-              return snapshot.data.getBool("welcome") != null
+              // return snapshot.data.getBool("welcome") != null
+              return snapshot.data.getBool("welcome") != false
                   ? new MyStrenghtsList()
                   : new Onboard();
             } else {
@@ -37,7 +38,7 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text);
+    return Scaffold();
   }
 }
 
