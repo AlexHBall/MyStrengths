@@ -90,16 +90,13 @@ class StrengthInputContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        IconButton(
-          icon: Icon(Icons.insert_emoticon, color: Colors.white),
-          iconSize: 30,
-          onPressed: null,
-        ),
-        SizedBox(
-          width: 7.5,
-        ),
         Expanded(
           child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(15))),
             child: new TextField(
               // autofocus: true,
               cursorColor: Colors.white,
@@ -112,7 +109,7 @@ class StrengthInputContainer extends StatelessWidget {
               },
               // textAlignVertical: TextAlignVertical.center,
               decoration: decoration,
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.center,
             ),
           ),
         ),

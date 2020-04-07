@@ -26,7 +26,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   InputDecoration _getDecorator() {
     return InputDecoration.collapsed(
       hintText: TextHelper.getPromptMessage(Localizations.localeOf(context)),
-      hintStyle: Theme.of(context).textTheme.display3,
+      hintStyle: Theme.of(context).textTheme.body2,
     );
   }
 
@@ -102,7 +102,7 @@ class DyanmicList extends State<MyStrenghtsList> {
       Expanded(
         child: getEntryList(),
       ),
-      InputEntryCard(_handleNewEntry, _decoration),
+      StrengthInputContainer(_handleNewEntry, _decoration),
       SizedBox(height: 25.0),
     ]);
   }

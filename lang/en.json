@@ -7,6 +7,7 @@
     "onboard_eplain_swipe" : "Swipe right on Entries to edit them \nSwipe left on Entries to delete them \nSee how this works below",
     "onboard_example_entry" : "Today I went to the gym",
     "onbard_welcome_done" : "I'm ready",
+    "onboard_skip" : "Skip",
     "entries": "Welcome",
     "loading_entries": "Loading ...",
     "add_new_entry": "Add a new entry below!",
