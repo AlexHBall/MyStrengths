@@ -98,7 +98,6 @@ class StrengthInputContainer extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(15))),
             child: new TextField(
-              // autofocus: true,
               cursorColor: Colors.white,
               style: Theme.of(context).textTheme.body2,
               controller: eCtrl,
@@ -107,7 +106,6 @@ class StrengthInputContainer extends StatelessWidget {
                   onSubmitted(text);
                 }
               },
-              // textAlignVertical: TextAlignVertical.center,
               decoration: decoration,
               textAlign: TextAlign.center,
             ),

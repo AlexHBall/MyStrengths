@@ -3,6 +3,7 @@ import 'package:my_strengths/ui/custom/custom_ui.dart';
 import 'package:my_strengths/doa/data_access_object.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
+import 'package:my_strengths/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_strengths/ui/settings.dart';
 
@@ -93,7 +94,9 @@ class OnboardAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(actions: <Widget>[
       FlatButton(
-        child: Text("Skip"),
+        child: Text(
+          AppLocalizations.of(context).translate('onboard_skip'),
+        ),
         textColor: Colors.white,
         onPressed: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
