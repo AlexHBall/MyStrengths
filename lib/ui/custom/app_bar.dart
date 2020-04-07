@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:my_strengths/ui/custom_calendar.dart';
+import 'package:my_strengths/ui/custom/custom_ui.dart';
 import 'package:my_strengths/doa/data_access_object.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
+import 'package:my_strengths/ui/strength_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'settings.dart';
+import 'package:my_strengths/ui/settings.dart';
 
-
-class MyAppBar extends StatelessWidget with PreferredSizeWidget {
+class MainAppBar extends StatelessWidget with PreferredSizeWidget {
   final Function(DateTime) onDateSelected;
   final String date;
   final String enabledPreferenceKey = 'enabled';
   final String namePreferenceKey = 'name';
 
-  MyAppBar(this.date, this.onDateSelected);
+  MainAppBar(this.date, this.onDateSelected);
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -55,7 +55,8 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
 
               var date = await Navigator.push(context,
                   MaterialPageRoute(builder: (context) {
-                return CalendarScreen(eventList,Localizations.localeOf(context));
+                return CalendarScreen(
+                    eventList, Localizations.localeOf(context));
               }));
               if (date != null) {
                 onDateSelected(date);
@@ -74,5 +75,35 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
       ],
     );
+  }
+}
+
+class OnboardAppBar extends StatelessWidget with PreferredSizeWidget {
+  final String welcomePreferenceKey = 'welcome';
+
+  OnboardAppBar();
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+
+  Future<void> _skipOnboard(SharedPreferences prefs) async {
+    prefs.setBool(welcomePreferenceKey, true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(actions: <Widget>[
+      FlatButton(
+        child: Text("Skip"),
+        textColor: Colors.white,
+        onPressed: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          _skipOnboard(prefs);
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return MyStrenghtsList();
+          }));
+        },
+      ),
+    ]);
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_strengths/utils/custom_notification_creator.dart';
 import 'package:my_strengths/models/models.dart';
-import 'package:my_strengths/ui/app_bar.dart';
 import 'custom/custom_ui.dart';
 import 'package:my_strengths/bloc/bloc.dart';
 import 'package:my_strengths/utils/utils.dart';
@@ -24,9 +23,10 @@ class DyanmicList extends State<MyStrenghtsList> {
   TextEditingController _ectrl;
 
   InputDecoration _getDecorator() {
-    return InputDecoration(
-        hintText: TextHelper.getPromptMessage(Localizations.localeOf(context)),
-        hintStyle: Theme.of(context).textTheme.body2);
+    return InputDecoration.collapsed(
+      hintText: TextHelper.getPromptMessage(Localizations.localeOf(context)),
+      hintStyle: Theme.of(context).textTheme.display3,
+    );
   }
 
   void _showSnackBar(BuildContext context, Entry entry) {
@@ -60,6 +60,24 @@ class DyanmicList extends State<MyStrenghtsList> {
     });
   }
 
+  void _handleDirectionalSwipe(
+      BuildContext context, DismissDirection direction, Entry entry) async {
+    if (direction == DismissDirection.endToStart) {
+      entry.softDelete = 1;
+      _myEntryBloc.updateEntry(entry);
+      _showSnackBar(context, entry);
+    } else if (direction == DismissDirection.startToEnd) {
+      _ectrl = new TextEditingController(text: entry.description);
+      String editedText = await showDialog(
+          context: context, builder: (context) => EditEntryDialog(_ectrl));
+      if (editedText != null) {
+        entry.description = editedText;
+        _myEntryBloc.updateEntry(entry);
+        _myEntryBloc.getEntries(_formattedDate);
+      }
+    }
+  }
+
   @override
   void initState() {
     notificationCreator = CustomNotificationCreator();
@@ -74,16 +92,16 @@ class DyanmicList extends State<MyStrenghtsList> {
     super.didChangeDependencies();
   }
 
-  Column newColumn() {
+  Column listBody() {
     _decoration = _getDecorator();
     return new Column(children: <Widget>[
-      Text(
-        AppLocalizations.of(context).translate('entries'),
-      ),
+      // Text(
+      //   AppLocalizations.of(context).translate('entries'),
+      // ),
       Expanded(
         child: getEntryList(),
       ),
-      StrengthInputContainer(_handleNewEntry, _decoration),
+      InputEntryCard(_handleNewEntry, _decoration),
       SizedBox(height: 25.0),
     ]);
   }
@@ -91,8 +109,8 @@ class DyanmicList extends State<MyStrenghtsList> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: MyAppBar(_formattedDate, _handleDateChange),
-      body: newColumn(),
+      appBar: MainAppBar(_formattedDate, _handleDateChange),
+      body: listBody(),
     );
   }
 
@@ -114,22 +132,7 @@ class DyanmicList extends State<MyStrenghtsList> {
                 Entry entry = snapshot.data[itemPosition];
                 return Dismissible(
                   onDismissed: (DismissDirection direction) async {
-                    if (direction == DismissDirection.endToStart) {
-                      entry.softDelete = 1;
-                      _myEntryBloc.updateEntry(entry);
-                      _showSnackBar(context, entry);
-                    } else if (direction == DismissDirection.startToEnd) {
-                      _ectrl =
-                          new TextEditingController(text: entry.description);
-                      String editedText = await showDialog(
-                          context: context,
-                          builder: (context) => EditEntryDialog(_ectrl));
-                      if (editedText != null) {
-                        entry.description = editedText;
-                        _myEntryBloc.updateEntry(entry);
-                        _myEntryBloc.getEntries(_formattedDate);
-                      }
-                    }
+                    _handleDirectionalSwipe(context, direction, entry);
                   },
                   background: EditContainer(),
                   secondaryBackground: DeleteContainer(),

@@ -27,6 +27,9 @@ ThemeData basicTheme() {
           fontSize: 22.0,
           color: Colors.white,
         ),
+        display3: base.headline.copyWith(
+          color: Colors.white, fontFamily: fontFamily, fontSize: 22
+        ),
         caption: base.caption.copyWith(
           color: Colors.white,
         ),

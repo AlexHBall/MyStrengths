@@ -1,9 +1,8 @@
 import 'dart:math';
-import 'package:my_strengths/bloc/frequency_bloc.dart';
+import 'package:my_strengths/bloc/bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:my_strengths/models/frequency.dart';
-import 'package:my_strengths/models/entry.dart';
+import 'package:my_strengths/models/models.dart';
 import 'package:meta/meta.dart';
 
 class CustomNotificationCreator {
@@ -46,6 +45,7 @@ class CustomNotificationCreator {
   _createNotification(String name, Entry entry, int duration) {
     String text = entry.description;
     String date = entry.date;
+    //TODO: Translate this
     scheduleNotification(notifications,
         title: 'Congratulations $name!',
         body: 'You did well with $text on the $date',

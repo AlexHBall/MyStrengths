@@ -22,7 +22,6 @@ class CalendarScreen extends StatelessWidget {
 }
 
 class CustomCalendar extends StatelessWidget {
-  //TODO: Change the locale
   final EventList<Event> eventList;
   final Locale locale;
   CustomCalendar(this.eventList,this.locale);

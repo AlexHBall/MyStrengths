@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_strengths/ui/custom/box_decoration.dart';
-import 'package:my_strengths/ui/custom/icons.dart';
+import 'package:my_strengths/ui/custom/custom_ui.dart';
 import 'package:my_strengths/utils/utils.dart';
 
 class LoadingContainer extends StatelessWidget {
@@ -55,7 +54,7 @@ class DeleteContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           DeleteIcon(),
-          SizedBox(width: 30.0),
+          SizedBox(width: 10.0),
         ],
       ),
       color: Colors.red,
@@ -71,7 +70,7 @@ class EditContainer extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          SizedBox(width: 30.0),
+          SizedBox(width: 10.0),
           EditIcon(),
         ],
       ),
@@ -91,11 +90,19 @@ class StrengthInputContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.insert_emoticon, color: Colors.white),
+          iconSize: 30,
+          onPressed: null,
+        ),
+        SizedBox(
+          width: 7.5,
+        ),
         Expanded(
           child: Container(
-            decoration: MyDecorator.getOldDecorator(),
             child: new TextField(
               // autofocus: true,
+              cursorColor: Colors.white,
               style: Theme.of(context).textTheme.body2,
               controller: eCtrl,
               onSubmitted: (String text) async {
@@ -103,8 +110,9 @@ class StrengthInputContainer extends StatelessWidget {
                   onSubmitted(text);
                 }
               },
+              // textAlignVertical: TextAlignVertical.center,
               decoration: decoration,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
             ),
           ),
         ),

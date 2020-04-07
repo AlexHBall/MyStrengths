@@ -49,7 +49,6 @@ class EditEntryDialog extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Container(
-                    // decoration: MyDecorator.getOldDecorator(),
                     child: TextField(
                         autofocus: true,
                         controller: eCtrl,

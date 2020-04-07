@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:my_strengths/ui/home.dart';
 import 'package:my_strengths/utils/utils.dart';
-import 'ui/strength_list.dart';
 import 'utils/theme.dart';
 
 void main() {
@@ -13,6 +13,9 @@ class MyStrengths extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: basicTheme(),
+      //TODO: Spash screen for android
+      //https://flutter.dev/docs/development/ui/splash-screen/android-splash-screen
+
       // debugShowCheckedModeBanner: false  ,
       supportedLocales: [
         Locale('en', 'UK'),
@@ -43,7 +46,7 @@ class MyStrengths extends StatelessWidget {
 
         return retLocale;
       },
-      home: MyStrenghtsList(),
+      home: Home(),
     );
   }
 }

@@ -10,7 +10,7 @@ class BaseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: Colors.blue,
+        color: Colors.blue.shade800,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 5,
         child: child);
@@ -156,5 +156,25 @@ class FrequencyCard extends StatelessWidget {
           ],
         ));
     return BaseSettingCard(childContainer);
+  }
+}
+
+class InputEntryCard extends StatelessWidget {
+  final Function(String) onSubmitted;
+  final InputDecoration decoration;
+
+  InputEntryCard(this.onSubmitted, this.decoration);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 75,
+      child: Card(
+          color: Colors.blue,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          elevation: 5,
+          child: StrengthInputContainer(onSubmitted, decoration)),
+    );
   }
 }
