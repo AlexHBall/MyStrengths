@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:my_strengths/ui/home.dart';
+import 'package:my_strengths/ui/strength_list.dart';
 import 'package:my_strengths/utils/utils.dart';
 import 'utils/theme.dart';
 
@@ -47,6 +48,9 @@ class MyStrengths extends StatelessWidget {
         return retLocale;
       },
       home: Home(),
+      routes: {
+        "/strengths": (context) => MyStrenghtsList(),
+      },
     );
   }
 }
