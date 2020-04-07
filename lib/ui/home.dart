@@ -22,7 +22,7 @@ class Home extends StatelessWidget {
               // return snapshot.data.getBool("welcome") != null
               return snapshot.data.getBool("welcome") != false
                   ? new MyStrenghtsList()
-                  : new Onboard();
+                  : new OnboardingScreen();
             } else {
               return new ErrorScreen(snapshot.error);
             }

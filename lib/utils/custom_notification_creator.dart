@@ -45,11 +45,12 @@ class CustomNotificationCreator {
   _createNotification(String name, Entry entry, int duration) {
     String text = entry.description;
     String date = entry.date;
-    //TODO: Translate this
 
     if (name == null) {
       name = "No Name";
     }
+
+    //TODO: Translate this
 
     scheduleNotification(notifications,
         title: 'Congratulations $name!',
