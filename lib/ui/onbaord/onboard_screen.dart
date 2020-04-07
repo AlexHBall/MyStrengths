@@ -10,11 +10,24 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final List<Widget> onBoardPages = [Welcome(), EnterName(), SwipeExplain()];
-
-  final int _numPages = 3;
-  final PageController _pageController = PageController(initialPage: 0);
+  final int _numPages = 4;
   int _currentPage = 0;
+
+  TextEditingController eCtrl;
+  PageController _pageController;
+  List<Widget> onBoardPages;
+  @override
+  void initState() {
+    _pageController = PageController(initialPage: 0);
+    eCtrl = new TextEditingController();
+    onBoardPages = [
+      Welcome(),
+      EnterName(eCtrl, _pageController),
+      NotificationExplain(_pageController),
+      SwipeExplain()
+    ];
+    super.initState();
+  }
 
   List<Widget> _buildPageIndicator() {
     List<Widget> list = [];
@@ -41,6 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: OnboardAppBar(),
+      resizeToAvoidBottomPadding: false,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Container(
@@ -69,12 +83,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       controller: _pageController,
                       onPageChanged: (int page) {
                         setState(() {
+                          FocusScope.of(context).unfocus();
                           _currentPage = page;
                         });
                       },
                       children: onBoardPages),
                 ),
-                Expanded(child: Text(''),),
+                Expanded(
+                  child: Text(''),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: _buildPageIndicator(),
@@ -84,72 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ),
       ),
-      bottomSheet: _currentPage == _numPages - 1
-          ? Container(
-              height: 100.0,
-              width: double.infinity,
-              color: Colors.blue,
-              child: GestureDetector(
-                onTap: () => print('Get started'),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 30.0),
-                    child: Text(
-                      'Get started',
-                    ),
-                  ),
-                ),
-              ),
-            )
-          : Text(''),
     );
-  }
-}
-
-class EnterName extends StatelessWidget {
-  EnterName();
-
-  @override
-  Widget build(BuildContext context) {
-    final String namePreferenceKey = 'name';
-    final TextEditingController eCtrl = TextEditingController();
-
-    Future<void> _setName(String name) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString(namePreferenceKey, name);
-    }
-
-    Column scaffoldChild = Column(
-      children: <Widget>[
-        SizedBox(
-          height: 20,
-        ),
-        Padding(
-          padding: EdgeInsets.all(25),
-          child: Display1Text(
-            AppLocalizations.of(context).translate('onboard_welcome_para'),
-          ),
-        ),
-        Text(
-          AppLocalizations.of(context).translate('onboard_enter_name'),
-          style: Theme.of(context).textTheme.headline,
-        ),
-        TextField(
-          autofocus: true,
-          cursorColor: Colors.white,
-          style: Theme.of(context).textTheme.display2,
-          controller: eCtrl,
-          onSubmitted: (String text) async {
-            if (text != null) {
-              _setName(text);
-            }
-          },
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-
-    return scaffoldChild;
   }
 }
 
@@ -189,6 +141,107 @@ class Welcome extends StatelessWidget {
   }
 }
 
+class EnterName extends StatelessWidget {
+  final TextEditingController eCtrl;
+  final PageController pageController;
+  EnterName(this.eCtrl, this.pageController);
+
+  @override
+  Widget build(BuildContext context) {
+    final String namePreferenceKey = 'name';
+
+    Future<void> _setName(String name) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString(namePreferenceKey, name);
+      pageController.nextPage(
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    }
+
+    Column nameCol = Column(
+      children: <Widget>[
+        // SizedBox(
+        //   height: 20,
+        // ),
+        Padding(
+          padding: EdgeInsets.all(25),
+          child: Display1Text(
+            AppLocalizations.of(context).translate('onboard_welcome_para'),
+          ),
+        ),
+        Text(
+          AppLocalizations.of(context).translate('onboard_enter_name'),
+          style: Theme.of(context).textTheme.headline,
+        ),
+        TextField(
+          // autofocus: true,
+          cursorColor: Colors.white,
+          style: Theme.of(context).textTheme.display2,
+          controller: eCtrl,
+          onSubmitted: (String text) async {
+            if (text != null) {
+              _setName(text);
+            }
+          },
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+
+    return nameCol;
+  }
+}
+
+class NotificationExplain extends StatelessWidget {
+  final PageController pageController;
+  NotificationExplain(this.pageController);
+
+  @override
+  Widget build(BuildContext context) {
+    final String enabledPreferenceKey = 'enabled';
+
+    Future<void> _setEnabledYes() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool(enabledPreferenceKey, true);
+      pageController.nextPage(
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    }
+
+    Future<void> _setEnabledNo() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool(enabledPreferenceKey, false);
+      pageController.nextPage(
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    }
+
+    Column notCol = Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(25),
+          child: Display1Text(
+            AppLocalizations.of(context).translate('onboard_notfication'),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            //TODO: Make chosen button highlighted
+            OnBoardButton(
+                AppLocalizations.of(context)
+                    .translate('onboard_notification_yes'),
+                _setEnabledYes),
+            OnBoardButton(
+                AppLocalizations.of(context)
+                    .translate('onboard_notification_no'),
+                _setEnabledNo)
+          ],
+        )
+      ],
+    );
+
+    return notCol;
+  }
+}
+
 class SwipeExplain extends StatelessWidget {
   SwipeExplain();
 
@@ -198,38 +251,41 @@ class SwipeExplain extends StatelessWidget {
       prefs.setBool("welcome", true);
     }
 
-    Column explain = Column(
+    void _onComplete() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      _skipOnboard(prefs);
+      Navigator.pushNamedAndRemoveUntil(context, "/strengths",
+          (Route<dynamic> route) {
+        return false;
+      });
+    }
+
+    Stack explain = Stack(
       children: <Widget>[
-        SizedBox(
-          height: 20,
+        Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Display1Text(
+                AppLocalizations.of(context).translate('onboard_eplain_swipe'),
+              ),
+            ),
+            //TODO: Add Swipe animations
+            Dismissible(
+              onDismissed: (DismissDirection direction) async {},
+              background: EditContainer(),
+              secondaryBackground: DeleteContainer(),
+              child: EntryCard(AppLocalizations.of(context)
+                  .translate("onboard_example_entry")),
+              key: UniqueKey(),
+            ),
+          ],
         ),
-        Body1Text(
-          AppLocalizations.of(context).translate('onboard_eplain_swipe'),
-        ),
-        //TODO: Add Swipe animations
-        Dismissible(
-          onDismissed: (DismissDirection direction) async {
-            // _handleDirectionalSwipe(context, direction, entry);
-          },
-          background: EditContainer(),
-          secondaryBackground: DeleteContainer(),
-          child: EntryCard(
-              AppLocalizations.of(context).translate("onboard_example_entry")),
-          key: UniqueKey(),
-        ),
-        FlatButton(
-          onPressed: () async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            _skipOnboard(prefs);
-            Navigator.pushNamedAndRemoveUntil(context, "/strengths",
-                (Route<dynamic> route) {
-              return false;
-            });
-          },
-          child: Body1Text(
-            AppLocalizations.of(context).translate('onbard_welcome_done'),
-          ),
-        )
+        Align(
+            alignment: Alignment.bottomCenter,
+            child: OnBoardButton(
+                AppLocalizations.of(context).translate('onbard_welcome_done'),
+                _onComplete))
       ],
     );
     return explain;
