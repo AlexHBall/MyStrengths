@@ -9,7 +9,7 @@
    <uses-permission android:name="android.permission.VIBRATE" />
    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
    <uses-permission android:name="android.permission.WAKE_LOCK" />
-   <application android:name="io.flutter.app.FlutterApplication" android:label="my_strengths" android:icon="@mipmap/ic_launcher">
+   <application android:name="io.flutter.app.FlutterApplication" android:label="My Strengths" android:icon="@mipmap/ic_launcher">
       <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
       <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
          <intent-filter>
