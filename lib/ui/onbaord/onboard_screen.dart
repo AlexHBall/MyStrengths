@@ -270,7 +270,6 @@ class SwipeExplain extends StatelessWidget {
                 AppLocalizations.of(context).translate('onboard_eplain_swipe'),
               ),
             ),
-            //TODO: Add Swipe animations
             Dismissible(
               onDismissed: (DismissDirection direction) async {},
               background: EditContainer(),

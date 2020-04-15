@@ -12,8 +12,10 @@ class TextHelper {
     ];
 
     List<String> frenchList = [
-      "Qu'est-ce qui t'as rendu fier aujourd'hui?",
-      "Qu'est-ce qui t'as rendu heureux aujourd'hui?"
+      "Qu'est-ce qui t'as rendu fier aujourd'hui ?",
+      "Qu'est-ce qui t'as rendu heureux aujourd'hui ?",
+      "Qu'est-ce qui s'est bien passé aujourd'hui ?",
+      "Qu'est-ce que tu as accompli aujourd'hui ?"
     ];
     if (locale.languageCode == "en"){
     return randomChoice(englishList);

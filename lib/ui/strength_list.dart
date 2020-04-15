@@ -112,12 +112,12 @@ class DyanmicList extends State<MyStrenghtsList> {
     return new Scaffold(
       appBar: MainAppBar(_formattedDate, _handleDateChange),
       body: listBody(),
-      //TODO: Remove this when onboarding done properly
+      //Remove this when onboarding done properly
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-SharedPreferences prefs = await SharedPreferences.getInstance();
-prefs.setBool("welcome", false);
-        print("weclome ${prefs.getBool("welcome")}");
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool("welcome", false);
+          print("weclome ${prefs.getBool("welcome")}");
         },
       ),
     );

@@ -6,21 +6,21 @@ import 'package:my_strengths/models/models.dart';
 import 'package:meta/meta.dart';
 
 class CustomNotificationCreator {
-  final notifications = FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin notifications;
   FrequencyBloc _frequencyBloc = FrequencyBloc();
   List<Frequency> frequencies;
 
   CustomNotificationCreator() {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        new FlutterLocalNotificationsPlugin();
+    notifications = new FlutterLocalNotificationsPlugin();
     var initializationSettingsAndroid =
         new AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = IOSInitializationSettings();
     var initializationSettings = InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+    notifications.initialize(initializationSettings,
         onSelectNotification: null);
+    print("notifications initalised");
   }
 
   void createNotifications(Entry entry) async {
@@ -79,7 +79,7 @@ Future showOngoingNotification(
     notifications.show(id, title, body, _ongoing);
 
 // Future _showNotification(
-//Instantly show a notification
+// // // Instantly show a notification
 //   FlutterLocalNotificationsPlugin notifications, {
 //   @required String title,
 //   @required String body,
@@ -101,15 +101,25 @@ Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
 
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       // What are these and why do they matter?
-      'your other channel id',
-      'your other channel name',
-      'your other channel description');
+      'your channel id',
+      'your channel name',
+      'your channel description');
   var iOSPlatformChannelSpecifics = IOSNotificationDetails();
   var platformChannelSpecifics = NotificationDetails(
       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+
   await notifications.schedule(
       0, title, body, scheduleTime, platformChannelSpecifics);
   print("Scheduled notification for $scheduleTime");
+
+
+  //DEBUG Code for instantly showing notification
+  var android = new AndroidNotificationDetails(
+      'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
+      priority: Priority.High, importance: Importance.Max);
+  var iOS = new IOSNotificationDetails();
+  var platform = new NotificationDetails(android, iOS);
+  await notifications.show(0, "AAAA", "AAAA", platform);
 }
 
 _getRandomTime(int maximum, int minimum) {
