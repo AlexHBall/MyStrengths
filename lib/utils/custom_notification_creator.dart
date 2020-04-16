@@ -78,16 +78,6 @@ Future showOngoingNotification(
 }) =>
     notifications.show(id, title, body, _ongoing);
 
-// Future _showNotification(
-// // // Instantly show a notification
-//   FlutterLocalNotificationsPlugin notifications, {
-//   @required String title,
-//   @required String body,
-//   @required NotificationDetails type,
-//   int id = 0,
-// }) =>
-//     notifications.show(id, title, body, type);
-
 Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
     {@required String title,
     @required String body,
@@ -100,10 +90,9 @@ Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
       atMidnight.day + duration, randomHours, randomMins);
 
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      // What are these and why do they matter?
-      'your channel id',
-      'your channel name',
-      'your channel description');
+      'Entry Reminder',
+      'Entry Reminder',
+      'Channel which reminds you of your entries');
   var iOSPlatformChannelSpecifics = IOSNotificationDetails();
   var platformChannelSpecifics = NotificationDetails(
       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
@@ -115,7 +104,7 @@ Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
 
   //DEBUG Code for instantly showing notification
   var android = new AndroidNotificationDetails(
-      'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
+      'instant', 'instant notifications', 'instant notifications',
       priority: Priority.High, importance: Importance.Max);
   var iOS = new IOSNotificationDetails();
   var platform = new NotificationDetails(android, iOS);
