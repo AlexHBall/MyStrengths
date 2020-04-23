@@ -56,7 +56,7 @@ class DyanmicList extends State<MyStrenghtsList> {
   void _handleNewEntry(String text) async {
     Entry newEntry = Entry(text, _formattedDate, 'Default Input Text');
     _myEntryBloc.addEntry(newEntry, _formattedDate);
-    notificationCreator.createNotifications(newEntry);
+    notificationCreator.createNotifications(newEntry,Localizations.localeOf(context));
     setState(() {
       _decoration = _getDecorator();
     });

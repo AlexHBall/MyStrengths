@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'dart:ui';
 import 'package:my_strengths/bloc/bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:my_strengths/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_strengths/models/models.dart';
 import 'package:meta/meta.dart';
@@ -23,18 +25,20 @@ class CustomNotificationCreator {
     print("notifications initalised");
   }
 
-  void createNotifications(Entry entry) async {
+  void createNotifications(Entry entry, Locale locale) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     const enabledPreferenceKey = 'enabled';
     bool switched = prefs.getBool(enabledPreferenceKey);
 
-    if (switched != null) {
-      String name = prefs.getString('name');
+    if (switched == true) {
+      String title = TextHelper.getNotificationTitle(locale, _getName(prefs));
+      String body =
+          TextHelper.getNotificationBody(locale, entry.description, entry.date);
 
       frequencies = await _frequencyBloc.getFrequenciesNow();
       if (frequencies.isNotEmpty) {
         for (int i = 0; i < frequencies.length; i++) {
-          await _createNotification(name, entry, frequencies[i].duration);
+          await _createNotification(title, body, frequencies[i].duration);
         }
       }
     } else {
@@ -42,20 +46,18 @@ class CustomNotificationCreator {
     }
   }
 
-  _createNotification(String name, Entry entry, int duration) {
-    String text = entry.description;
-    String date = entry.date;
+  String _getName(SharedPreferences prefs) {
+    String name = prefs.getString('name');
 
     if (name == null) {
-      name = "";
+      return "";
     }
+    return name;
+  }
 
-    //TODO: Translate this
-
+  _createNotification(String title, String body, int duration) {
     scheduleNotification(notifications,
-        title: 'Congratulations $name!',
-        body: 'You did well with $text on the $date',
-        duration: duration);
+        title: title, body: body, duration: duration);
   }
 }
 
@@ -78,17 +80,13 @@ Future showOngoingNotification(
 }) =>
     notifications.show(id, title, body, _ongoing);
 
-
-
 Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
     {@required String title,
     @required String body,
     @required int duration}) async {
-
   DateTime scheduledTime = _getScheduledTime(duration);
-  await notifications.schedule(
-      0, title, body, scheduledTime, _getDetails());
-  print("Scheduled notification for $scheduledTime");
+  await notifications.schedule(0, title, body, scheduledTime, _getDetails());
+  print("Scheduled notification for $scheduledTime \ntitle [$title] \nbody [$body]");
 
   _showInstantNotificaiton(notifications, title, body);
 }
@@ -105,13 +103,14 @@ _showInstantNotificaiton(FlutterLocalNotificationsPlugin notifications,
   await notifications.show(0, title, body, platform);
 }
 
-DateTime _getScheduledTime(int duration){
- final now = DateTime.now();
+DateTime _getScheduledTime(int duration) {
+  final now = DateTime.now();
   final randomHours = _getRandomTime(22, 8);
   final randomMins = _getRandomTime(60, 0);
   final scheduleTime = new DateTime(
       now.year, now.month, now.day + duration, randomHours, randomMins);
-  print("Duration [$duration] Now [${now.day}] Scheduled [${scheduleTime.day}]");
+  print(
+      "Duration [$duration] Now [${now.day}] Scheduled [${scheduleTime.day}]");
   return scheduleTime;
 }
 
