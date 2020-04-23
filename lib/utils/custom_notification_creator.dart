@@ -47,7 +47,7 @@ class CustomNotificationCreator {
     String date = entry.date;
 
     if (name == null) {
-      name = "No Name";
+      name = "";
     }
 
     //TODO: Translate this
@@ -101,14 +101,19 @@ Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
       0, title, body, scheduleTime, platformChannelSpecifics);
   print("Scheduled notification for $scheduleTime");
 
+  _showInstantNotificaiton(notifications, title, body);
+}
 
+_showInstantNotificaiton(FlutterLocalNotificationsPlugin notifications,
+    String title, String body) async {
   //DEBUG Code for instantly showing notification
+
   var android = new AndroidNotificationDetails(
       'instant', 'instant notifications', 'instant notifications',
       priority: Priority.High, importance: Importance.Max);
   var iOS = new IOSNotificationDetails();
   var platform = new NotificationDetails(android, iOS);
-  await notifications.show(0, "AAAA", "AAAA", platform);
+  await notifications.show(0, title, body, platform);
 }
 
 _getRandomTime(int maximum, int minimum) {

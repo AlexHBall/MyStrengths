@@ -7,6 +7,7 @@ import 'custom/custom_ui.dart';
 import 'package:my_strengths/bloc/bloc.dart';
 import 'package:my_strengths/utils/utils.dart';
 
+//TODO: Localise this americans use different date format
 DateFormat daysFormat = DateFormat("dd-MM-yyyy");
 
 class MyStrenghtsList extends StatefulWidget {

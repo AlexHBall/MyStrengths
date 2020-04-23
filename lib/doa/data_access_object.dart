@@ -4,6 +4,7 @@ import 'package:my_strengths/models/frequency.dart';
 import 'package:my_strengths/database/database.dart';
 import 'package:intl/intl.dart';
 
+//TODO: Does this need to be changed or can it be converted outside db
 DateFormat dateFormat = DateFormat("dd-MM-yyyy");
 final String entryTable = 'Entry_table';
 final String frequencyTable = 'Frequency_table';

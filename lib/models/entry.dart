@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 class Entry {
+  //TODO: Localise this americans use different date format
   DateFormat daysFormat = DateFormat("dd-MM-yyyy");
 
   int _id;
