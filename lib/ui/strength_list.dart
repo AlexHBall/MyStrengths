@@ -114,13 +114,13 @@ class DyanmicList extends State<MyStrenghtsList> {
       appBar: MainAppBar(_formattedDate, _handleDateChange),
       body: listBody(),
       //Remove this when onboarding done properly
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setBool("welcome", false);
-          print("weclome ${prefs.getBool("welcome")}");
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     SharedPreferences prefs = await SharedPreferences.getInstance();
+      //     prefs.setBool("welcome", false);
+      //     print("weclome ${prefs.getBool("welcome")}");
+      //   },
+      // ),
     );
   }
 

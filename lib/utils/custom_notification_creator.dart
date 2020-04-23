@@ -88,7 +88,7 @@ Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
   await notifications.schedule(0, title, body, scheduledTime, _getDetails());
   print("Scheduled notification for $scheduledTime \ntitle [$title] \nbody [$body]");
 
-  _showInstantNotificaiton(notifications, title, body);
+  // _showInstantNotificaiton(notifications, title, body);
 }
 
 _showInstantNotificaiton(FlutterLocalNotificationsPlugin notifications,
