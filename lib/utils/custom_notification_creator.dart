@@ -78,28 +78,17 @@ Future showOngoingNotification(
 }) =>
     notifications.show(id, title, body, _ongoing);
 
+
+
 Future<void> scheduleNotification(FlutterLocalNotificationsPlugin notifications,
     {@required String title,
     @required String body,
     @required int duration}) async {
-  final now = DateTime.now();
-  final atMidnight = new DateTime(now.year, now.month, now.day);
-  final randomHours = _getRandomTime(22, 8);
-  final randomMins = _getRandomTime(60, 0);
-  final scheduleTime = new DateTime(atMidnight.year, atMidnight.month,
-      atMidnight.day + duration, randomHours, randomMins);
 
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'Entry Reminder',
-      'Entry Reminder',
-      'Channel which reminds you of your entries');
-  var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-  var platformChannelSpecifics = NotificationDetails(
-      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-
+  DateTime scheduledTime = _getScheduledTime(duration);
   await notifications.schedule(
-      0, title, body, scheduleTime, platformChannelSpecifics);
-  print("Scheduled notification for $scheduleTime");
+      0, title, body, scheduledTime, _getDetails());
+  print("Scheduled notification for $scheduledTime");
 
   _showInstantNotificaiton(notifications, title, body);
 }
@@ -116,7 +105,27 @@ _showInstantNotificaiton(FlutterLocalNotificationsPlugin notifications,
   await notifications.show(0, title, body, platform);
 }
 
-_getRandomTime(int maximum, int minimum) {
+DateTime _getScheduledTime(int duration){
+ final now = DateTime.now();
+  final randomHours = _getRandomTime(22, 8);
+  final randomMins = _getRandomTime(60, 0);
+  final scheduleTime = new DateTime(
+      now.year, now.month, now.day + duration, randomHours, randomMins);
+  print("Duration [$duration] Now [${now.day}] Scheduled [${scheduleTime.day}]");
+  return scheduleTime;
+}
+
+NotificationDetails _getDetails() {
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'Entry Reminder',
+      'Entry Reminder',
+      'Channel which reminds you of your entries');
+  var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+  return NotificationDetails(
+      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+}
+
+int _getRandomTime(int maximum, int minimum) {
   Random random = new Random();
-  return random.nextInt(maximum) + minimum;
+  return minimum + random.nextInt(maximum - minimum);
 }
