@@ -14,10 +14,7 @@ class MyStrengths extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: basicTheme(),
-      //TODO: Spash screen for android
-      //https://flutter.dev/docs/development/ui/splash-screen/android-splash-screen
-
-      // debugShowCheckedModeBanner: false  ,
+      debugShowCheckedModeBanner: false,
       supportedLocales: [
         Locale('en', 'UK'),
         Locale('fr', 'FR'),

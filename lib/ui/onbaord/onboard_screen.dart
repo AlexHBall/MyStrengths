@@ -224,7 +224,6 @@ class NotificationExplain extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            //TODO: Make chosen button highlighted
             OnBoardButton(
                 AppLocalizations.of(context)
                     .translate('onboard_notification_yes'),
