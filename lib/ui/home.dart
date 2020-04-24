@@ -18,9 +18,8 @@ class Home extends StatelessWidget {
             return new LoadingScreen("loading");
           default:
             if (!snapshot.hasError) {
-              // @ToDo("Return a welcome screen");
-              // return snapshot.data.getBool("welcome") != null
-              return snapshot.data.getBool("welcome") != false
+              return snapshot.data.getBool("welcome") != null
+              // return snapshot.data.getBool("welcome") != false
                   ? new MyStrenghtsList()
                   : new OnboardingScreen();
             } else {
